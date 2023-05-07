@@ -22,14 +22,20 @@ count = 0
 program = a.split("\n")
 
 for line in program:
+	estado=0
 	count = count + 1
 	print("line#", count, "\n", line)
 
 	tokens=line.split(' ')
+	#x,y,z;
+	tamanio=len(tokens)
 	print("Los tokens son ", tokens)
 
 	print('Line#', count, "Propiedades \n")
 	for token in tokens:
+		if(estado==2):
+			tokens=token.split(',')
+			print(tokens)
 		print("Token: ",token)
 		matchlet = re.search(list(identifier_key)[0],token)
 		matchnum = re.search(list(identifier_key)[1],token)
@@ -37,6 +43,7 @@ for line in program:
 			print("el operador es: ", operators[token])
 		if token in data_type_key:
 			print("el tipo de dato es: ", data_type[token])
+			estado=2
 		if token in punctuation_symbol_key:
 			print("el simbolo de puntuacion es: ", punctuation_symbol[token])
 		if matchlet:
