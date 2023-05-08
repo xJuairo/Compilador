@@ -2,61 +2,90 @@
 import sys
 import re
 
-a=''
-
+contenido = ""
 for i in range(0,len(sys.argv)):
-    print(str(sys.argv[i]))
-    a += str(sys.argv[i])
-    a+='\n'
+    contenido += str(sys.argv[i])
+    contenido+='\n'
 
-
-operators = {'=' : 'Assignment op','+' : 'Addition op','-' : 'Subtraction op','*' : 'Multiplication op','<' : 'Lessthan op','>' : 'Greaterthan op','%':'Mod op',
-'<=':'Lessthanorequal op','>=':'Greaterthanorequal op','==':'Equal op','!=':'Different op','(':'Parentright op',')':'Parentleft op','{':'Leftbracket op','}':'Rightbracket op', 
-'++':'Increment op','--':'Decrement op' }
-operators_key = operators.keys()
-
-punctuation_symbol = { ':' : 'colon', ';' : 'semi-colon', '.' : 'dot' , ',' : 'comma' }
-punctuation_symbol_key = punctuation_symbol.keys()
-
-palabras_reservadas = { 'main' : 'palabra reservada', 'if' : 'palabra reservada', 'then' : 'palabra reservada', 'else' : 'palabra reservada', 'do' : 'palabra reservada',
- 'while' : 'palabra reservada', 'repeat' : 'palabra reservada', 'until' : 'palabra reservada', 'cin': 'palabra reservada', 'cout' : 'palabra reservada' }
-
-data_type = {'int':'tipo integer','real':'tipo flotante','boolean':'tipo boleano','char':'tipo char'}
-data_type_key = data_type.keys()
-
-identifier = {'[a-zA-Z]':'identificador','[0-9]':'Digit'}
-identifier_key = identifier.keys()
-
-count = 0
-
-
-# Utilizamos una expresión regular para encontrar todos los tokens en la línea
-tokensunalinea = re.findall(r'//.*', a)
-tokensmultilinea = re.findall(r'/\*(?:.|\n)*?\*/', a, re.DOTALL)
-
-
-tokens = re.findall(r'//.*|/\*(?:.|\n)*?\*/|[\w]+|[^\w\s]|\n', a)
-print("Los tokens son ", tokens)
-
-print('Line#', count, "Propiedades \n")
-for token in tokens:
-    if token in operators_key:
-        print(token, operators[token])
-    elif token in punctuation_symbol_key:
-        print(token, punctuation_symbol[token])
-    elif token in data_type_key:
-        print(token, data_type[token])
-    elif re.match(r'/\*(?:.|\n)*?\*/', token):
-        print(token, "Comentario de múltiples líneas")
-    elif re.match(r'/', token):
-        if re.match(r'//',token):
-            print(token, "Comentario simple")
+# Diccionarios de tokens
+palabras_reservadas = {"if": "palabra reservada", "else": "palabra reservada", "end": "palabra reservada", "do": "palabra reservada", "while": "palabra reservada", "repeat": "palabra reservada", "until": "palabra reservada", "cin": "palabra reservada", "cout": "palabra reservada", "real": "palabra reservada", "int": "palabra reservada", "boolean": "palabra reservada", "true": "palabra reservada", "false": "palabra reservada"}
+simbolos_especiales = {"(": "PAR_IZQ", ")": "PAR_DER", "{": "LLAVE_IZQ", "}": "LLAVE_DER", ";": "PUNTO_COMA", ",": "COMA"}
+operadores_aritmeticos = {"+": "SUMA", "-": "RESTA", "*": "MULTIPLICACION", "/": "DIVISION", "=": "IGUALACION"}
+operadores_relacionales = {"==": "IGUALDAD", "!=": "DIFERENTE", "<>":"DIFERENTE2","<": "MENOR_QUE", ">": "MAYOR_QUE", "<=": "MENOR_IGUAL_QUE", ">=": "MAYOR_IGUAL_QUE"}
+operadores_logicos = {"&&": "AND", "||": "OR", "!": "NOT"}
+operadores_dobles = {"++": "INCREMENTO", "--": "DECREMENTO"}
+# Tokenizar contenido
+tokens = []
+linea = 1
+col = 1
+i = 0
+while i < len(contenido):
+    # Ignorar espacios en blanco
+    col+=1
+    if contenido[i].isspace():
+        if (contenido[i] == "\n"):
+            linea +=1
+            col = 1
+        i += 1
+        continue
+    # Identificar comentarios de una línea
+    if contenido[i:i+2] == "//":
+        i = contenido.index("\n", i)
+        continue
+    # Identificar comentarios multilinea
+    if contenido[i:i+2] == "/*":
+        i = contenido.index("*/", i) + 2
+        continue
+    # Identificar palabras reservadas, identificadores y números
+    if contenido[i].isalpha():
+        j = i + 1
+        while j < len(contenido) and (contenido[j].isalnum() or contenido[j] == "_"):
+            j += 1
+        token = contenido[i:j]
+        if token in palabras_reservadas:
+            tokens.append("[" + token + ", "  + palabras_reservadas[token] +"]")
         else:
-            print(token, "Operador Division")
-    elif re.match(r'\n', token):
-        print(token, "Salto de linea")
-    else:
-        for key in identifier_key:
-            if re.match(key, token[0]):
-                print(token, identifier[key])
-                break
+            tokens.append("[" + token + ", ídentificador]")
+        i = j
+        continue
+    elif contenido[i].isdigit():
+        j = i + 1
+        while j < len(contenido) and contenido[j].isdigit():
+            j += 1
+        if j < len(contenido) and contenido[j] == ".":
+            j += 1
+            while j < len(contenido) and contenido[j].isdigit():
+                j += 1
+            tokens.append("[" + contenido[i:j] + ", flotante]")
+        else:
+            tokens.append("[" + contenido[i:j] + ", entero]")
+        i = j
+        continue
+    # Identificar símbolos especiales
+    if contenido[i] in simbolos_especiales:
+        tokens.append("[" + contenido[i] + ", simbolo especial]")
+        i += 1
+        continue
+    # Identificar operadores aritméticos y relacionales
+    if contenido[i:i+2] in operadores_relacionales:
+        tokens.append("[" + operadores_relacionales[contenido[i:i+2]] + ", operador relacional]")
+        i += 2
+        continue
+    elif contenido[i] in operadores_relacionales:
+        tokens.append("[" + operadores_relacionales[contenido[i]] + ", operador relacional]")
+        i += 1
+        continue
+    if contenido[i:i+2] in operadores_dobles:
+        tokens.append("[" +contenido[i:i+2] + ", operador aritmetico]")
+        i += 2
+        continue
+    elif contenido[i] in operadores_aritmeticos:
+        tokens.append("[" + contenido[i] + ", operador aritmetico]")
+        i +=1
+        continue
+    else: 
+        tokens.append("error (linea:" + str(linea) +", columna: " + str(col+1) + ")")
+        i+=1
+        continue
+for item in tokens:
+    print(item)

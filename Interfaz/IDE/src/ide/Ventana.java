@@ -5,6 +5,9 @@
 package ide;
 
 import java.awt.Color;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.StringWriter;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -66,13 +69,20 @@ public class Ventana extends javax.swing.JFrame {
         editor.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 editorKeyReleased(evt);
+                
             }
         });
         //editor.colors();
         initComponents();
     }
 
-    
+    public void obtenerRespuesta(String resp) throws IOException{
+        File archivo = new File("resultado.txt");
+        FileWriter writer = new FileWriter(archivo);
+        LexicoCode.setText(resp);
+        writer.write(resp);
+        writer.close();
+    }
 
     
     /**

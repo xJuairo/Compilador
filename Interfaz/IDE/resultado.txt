@@ -1,0 +1,6 @@
+[Hola, ídentificador]
+[int, palabra reservada]
+[x, ídentificador]
+[=, operador aritmetico]
+[0, entero]
+[;, simbolo especial]
