@@ -1,3 +1,3 @@
 # Compilador
 Proyecto de la materia intersemestral Compiladores
-Mientras se encuentra en desarrollo, este repositorio servira como Deposito de archivos que luego seran reestructurados para dar paso al resultado final
+Dentro de la carpeta intefraz esta un proyecto de java ant, el cual se debe ejecutar para poder ver todos los avances
