@@ -11,6 +11,7 @@ import java.awt.event.KeyEvent;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -46,6 +47,8 @@ public class EditorScrollPane extends JScrollPane {
   private TextLineNumber lineNumbers;
   private Ventana compf;
   private String respuesta = "";
+  private String errores = "";
+  private int position;
 
   /*
    * Here the constructor creates a TextPane as an editor-field and another TextPane for the
@@ -60,9 +63,8 @@ public class EditorScrollPane extends JScrollPane {
     
     
     
-
+    
     Document doc = inputArea.getDocument();
-    colors();
 
     // Replacing tabs with two spaces
     ((AbstractDocument) doc).setDocumentFilter(new DocumentFilter() {
@@ -72,29 +74,21 @@ public class EditorScrollPane extends JScrollPane {
       }
     });
 
-    // Line-numbers
-    /*lineNumbers = new JTextPane();
-    lineNumbers.setBackground(Color.GRAY);
-    lineNumbers.setEditable(false);
-    // Line-numbers should be right-aligned
-    SimpleAttributeSet rightAlign = new SimpleAttributeSet();
-    StyleConstants.setAlignment(rightAlign, StyleConstants.ALIGN_RIGHT);
-    lineNumbers.setParagraphAttributes(rightAlign, true);*/
 
     doc.addDocumentListener(new DocumentListener() {
       @Override
       public void changedUpdate(DocumentEvent e) {
-        lineNumbers();
+        colors();
       }
 
       @Override
       public void insertUpdate(DocumentEvent e) {
-        lineNumbers();
+        colors();
       }
 
       @Override
       public void removeUpdate(DocumentEvent e) {
-        lineNumbers();
+        colors();
       }
     });
     // Setting font
@@ -112,7 +106,9 @@ public class EditorScrollPane extends JScrollPane {
         public void keyReleased(java.awt.event.KeyEvent evt) {
             editorKeyReleased(evt);
             try {
-                modificarJFrame(respuesta);
+                limpiarJFrame();
+                modificarJFrame(respuesta,errores);
+                colors();
             } catch (IOException ex) {
                 Logger.getLogger(EditorScrollPane.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -120,9 +116,13 @@ public class EditorScrollPane extends JScrollPane {
     });
   }
     
-    private void modificarJFrame(String resp) throws IOException{
+    private void modificarJFrame(String resp,String err) throws IOException{
         Ventana jframe = (Ventana) SwingUtilities.getWindowAncestor(this);
-        jframe.obtenerRespuesta(resp);
+        jframe.obtenerRespuesta(resp,err);
+    }
+    private void limpiarJFrame() throws IOException{
+        Ventana jframe = (Ventana) SwingUtilities.getWindowAncestor(this);
+        jframe.clearAllComp();
     }
       private int findLastNonWordChar(String text, int index){
         while(--index >= 0){
@@ -144,7 +144,7 @@ public class EditorScrollPane extends JScrollPane {
     }
     
     public void colors(){
-        
+        position = inputArea.getCaretPosition();
         final StyleContext cont = StyleContext.getDefaultStyleContext();
         
         final AttributeSet colorazul = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, new Color(6,57,112));
@@ -156,35 +156,7 @@ public class EditorScrollPane extends JScrollPane {
         final AttributeSet colornaranja = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, new Color(200,100,100));
         DefaultStyledDocument doca = new DefaultStyledDocument(){
         public void insertString(int offset, String str, AttributeSet a) throws BadLocationException{
-            /*String stra = inputArea.getText();
-            System.out.println(stra);
-            SimpleAttributeSet plain = new SimpleAttributeSet();
-            StyleConstants.setFontFamily(plain, "Monospaced");
-            StyleConstants.setFontSize(plain, 12);
 
-            // Bold style
-            SimpleAttributeSet bold = new SimpleAttributeSet();
-            StyleConstants.setBold(bold, true);
-
-            // Remove all from document
-            Document doc = lineNumbers.getDocument();
-            doc.remove(0, doc.getLength());
-
-            // Calculating the number of lines
-            int length = stra.length() - stra.replaceAll("\n", "").length() + 1;
-
-            // Adding line-numbers
-            for (int i = 1; i <= length; i++) {
-
-            // Non-bold line-numbers
-                if (i < length) {
-                  doc.insertString(doc.getLength(), i + "\n", plain);
-
-                // Last line-number bold
-                } else {
-                  doc.insertString(doc.getLength(), i + "\n", bold);
-                }
-            }*/
             super.insertString(offset, str, a);
             
             String text = getText(0, getLength());
@@ -198,7 +170,7 @@ public class EditorScrollPane extends JScrollPane {
 
             while (wordR <= after) {
                 if (wordR == after || String.valueOf(text.charAt(wordR)).matches("\\W")) {
-                    if (text.substring(wordL, wordR).matches("(\\W)*(main|if|then|else|do|while|repeat|until|cin|cout)")) {
+                    if (text.substring(wordL, wordR).matches("(\\W)*(main|if|then|else|do|while|repeat|until|cin|cout|end|until)")) {
                         setCharacterAttributes(wordL, wordR - wordL, colorrojo, false);
                     } else if (text.substring(wordL, wordR).matches("(\\W)*(int|real|boolean|char)")) {
                         setCharacterAttributes(wordL, wordR - wordL, colorazul, false);
@@ -248,9 +220,10 @@ public class EditorScrollPane extends JScrollPane {
         String temp = this.inputArea.getText();
         this.inputArea.setStyledDocument(txt.getStyledDocument());
         this.inputArea.setText(temp);
+        inputArea.setCaretPosition(position);
     }
     
-    private void editorKeyReleased(java.awt.event.KeyEvent evt) {                                        
+    public void editorKeyReleased(java.awt.event.KeyEvent evt) {                                        
         int keyCode = evt.getKeyCode();
         if((keyCode >= 65 && keyCode <= 90) || (keyCode >= 48 && keyCode <= 57)
             || (keyCode >= 97 && keyCode <= 122 ) || (keyCode != 27 && !(keyCode >= 37
@@ -258,8 +231,9 @@ public class EditorScrollPane extends JScrollPane {
                 && keyCode <= 18) && keyCode !=524 
                 && keyCode != 20)){
         if (keyCode == KeyEvent.VK_DELETE){
-
+            
         }
+        
                 PythonInterpreter interpreter = new PythonInterpreter();
                 System.out.println(inputArea.getText());
                 String[] argumentos = inputArea.getText().split("\\r?\\n");
@@ -279,9 +253,25 @@ public class EditorScrollPane extends JScrollPane {
                 interpreter.exec(
                         "import sys\n"
                         + "sys.argv = " + ArgumentosString);
-                interpreter.execfile("../../AnalizadorLexico/prueba.py");
+                interpreter.execfile("../../AnalizadorLexico/pruebaarchivo.py");
                 String output = outputStream.toString();
-                respuesta = output;
+                String resp = output;
+                int index = resp.indexOf('\n');
+                String tam = (index >= 0) ? resp.substring(0, index) : resp; 
+                String numericString = tam.replaceAll("\\D+", "");
+                int numericValue = Integer.parseInt(numericString);
+                String[] lines = resp.split("\n");
+                if(numericValue < lines.length - 1)
+                    errores = String.join("\n", Arrays.copyOfRange(lines, numericValue+1, lines.length));
+                else
+                    errores = "";
+                //errores = (index >= 0) ? resp.substring(index + tamanio) : resp;
+                String[] lineas = resp.split("\n");
+                respuesta = resp;
+                int start = 1;
+                if (start >= 0 && numericValue < lines.length) {
+                    respuesta = String.join("\n", Arrays.copyOfRange(lineas, start, numericValue + 1));
+                }               
             if(!compf.getTitle().contains("*")){
                 compf.setTitle(compf.getTitle()+"*");
             }
@@ -331,6 +321,10 @@ public class EditorScrollPane extends JScrollPane {
   
   public String getRespuesta(){
       return respuesta;
+  }
+  
+  public String getErrores(){
+      return errores;
   }
   
   

@@ -5,6 +5,7 @@
 package ide;
 
 import java.awt.Color;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -76,12 +77,17 @@ public class Ventana extends javax.swing.JFrame {
         initComponents();
     }
 
-    public void obtenerRespuesta(String resp) throws IOException{
-        File archivo = new File("resultado.txt");
+    public void obtenerRespuesta(String resp, String err) throws IOException{
+        File archivo = new File("Tokens.txt");
         FileWriter writer = new FileWriter(archivo);
         LexicoCode.setText(resp);
         writer.write(resp);
         writer.close();
+        File archi = new File("Errores.txt");
+        FileWriter writ = new FileWriter(archi);
+        ErroresCode.setText(err);
+        writ.write(err);
+        writ.close();
     }
 
     
@@ -378,6 +384,10 @@ public class Ventana extends javax.swing.JFrame {
     public void clearAllComp(){
         ErroresCode.setText("");
         ResultadosCode.setText("");
+    }
+    
+    public void clearErroresCode()throws IOException{
+        ErroresCode.setText("");
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
