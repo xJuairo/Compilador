@@ -2,5 +2,5 @@
 [@, error en linea:1, columna: 14]
 [., error en linea:2, columna: 12]
 [., error en linea:2, columna: 14]
-[!, error en linea:40, columna: 5]
-[., error en linea:40, columna: 8]
+[!, error en linea:41, columna: 5]
+[., error en linea:41, columna: 8]

@@ -11,7 +11,10 @@ import java.awt.event.KeyEvent;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -28,8 +31,10 @@ import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.Document;
 import javax.swing.text.DocumentFilter;
 import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
+import javax.swing.text.StyledDocument;
 import org.python.core.PyInstance;
 import org.python.util.PythonInterpreter;
 
@@ -49,6 +54,7 @@ public class EditorScrollPane extends JScrollPane {
   private String respuesta = "";
   private String errores = "";
   private int position;
+  private HashMap<String, String> map = new HashMap<String, String>();
 
   /*
    * Here the constructor creates a TextPane as an editor-field and another TextPane for the
@@ -108,7 +114,6 @@ public class EditorScrollPane extends JScrollPane {
             try {
                 limpiarJFrame();
                 modificarJFrame(respuesta,errores);
-                colors();
             } catch (IOException ex) {
                 Logger.getLogger(EditorScrollPane.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -143,6 +148,7 @@ public class EditorScrollPane extends JScrollPane {
         return index;        
     }
     
+    
     public void colors(){
         position = inputArea.getCaretPosition();
         final StyleContext cont = StyleContext.getDefaultStyleContext();
@@ -155,11 +161,50 @@ public class EditorScrollPane extends JScrollPane {
         final AttributeSet colorverde = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, new Color(0,155,0));
         final AttributeSet colornaranja = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, new Color(200,100,100));
         DefaultStyledDocument doca = new DefaultStyledDocument(){
+
         public void insertString(int offset, String str, AttributeSet a) throws BadLocationException{
 
             super.insertString(offset, str, a);
             
-            String text = getText(0, getLength());
+           String text = getText(0, getLength());
+           
+            Pattern palabrasReservadas = Pattern.compile("\\b(main|if|IF|else|ELSE|end|END|do|DO|while|then|THEN|WHILE|repeat|REPEAT|until|UNTIL|cin|cout)\\b");
+                Matcher matcher = palabrasReservadas.matcher(text);
+                while (matcher.find()) {
+                    setCharacterAttributes(matcher.start(),
+                            matcher.end() - matcher.start(), colorrojo, true);
+                }
+                //match NUMEROS
+                Pattern numerosPattern = Pattern.compile("\\b(-?\\d+(\\.\\d+)?)\\b");
+                matcher = numerosPattern.matcher(text);
+                while (matcher.find()) {
+                    setCharacterAttributes(matcher.start(),
+                            matcher.end() - matcher.start(), colormorado, true);
+                }
+                //match tipo de datos
+                Pattern tipoDeDatos = Pattern.compile("\\b(int|INT|real|REAL|boolean|BOOLEAN)\\b");
+                matcher = tipoDeDatos.matcher(text);
+                while (matcher.find()) {
+                    setCharacterAttributes(matcher.start(),
+                            matcher.end() - matcher.start(), colorazul, true);
+                }
+                //MATCH VALORES BOOLEANOS
+                Pattern booleanPattern = Pattern.compile("\\b(true|TRUE|false|FALSE)\\b");
+                matcher = booleanPattern.matcher(text);
+                while (matcher.find()) {
+                    setCharacterAttributes(matcher.start(),
+                            matcher.end() - matcher.start(), colornaranja, true);
+                }
+                //MATCH OPERADORES
+                Pattern operatorsPattern = Pattern.compile("[-+*/=<>!]");
+                matcher = operatorsPattern.matcher(text);
+                while (matcher.find()) {
+                    setCharacterAttributes(matcher.start(),
+                            matcher.end() - matcher.start(), colorverde, true);
+                }
+
+            
+           /* 
             int before = findLastNonWordChar(text, offset);
             if (before < 0) {
                 before = 0;
@@ -171,7 +216,7 @@ public class EditorScrollPane extends JScrollPane {
             while (wordR <= after) {
                 if (wordR == after || String.valueOf(text.charAt(wordR)).matches("\\W")) {
                     if (text.substring(wordL, wordR).matches("(\\W)*(main|if|then|else|do|while|repeat|until|cin|cout|end|until)")) {
-                        setCharacterAttributes(wordL, wordR - wordL, colorrojo, false);
+                        setCharacterAttributes(wordL, wordR - wordL, colorrojo, false);                        
                     } else if (text.substring(wordL, wordR).matches("(\\W)*(int|real|boolean|char)")) {
                         setCharacterAttributes(wordL, wordR - wordL, colorazul, false);
                     } else if (text.substring(wordL, wordR).matches("(\\W)*(\\d+$)")) {
@@ -179,17 +224,18 @@ public class EditorScrollPane extends JScrollPane {
                     }
                     else if (text.substring(wordL, wordR).matches("(\\W)*(true|TRUE|false|FALSE)")) {
                         setCharacterAttributes(wordL, wordR - wordL, colorverde, false);
-                    } else if (text.substring(wordL, wordR).matches("[-+*/]")) {
+                    } else if (text.substring(wordL, wordR).matches("[-+*//*]")) {
                         setCharacterAttributes(wordL, wordR - wordL, colornaranja, false);
-                    } else {
+                    }
+                    else {
                         setCharacterAttributes(wordL, wordR - wordL, colornegro, false);
                     }
                     wordL = wordR;
                 }
                 wordR++;
-            }
+            }*/
                 Pattern singleLinecommentsPattern = Pattern.compile("\\/\\/.*");
-                Matcher matcher = singleLinecommentsPattern.matcher(text);
+                matcher = singleLinecommentsPattern.matcher(text);
 
                 while (matcher.find()) {
                     setCharacterAttributes(matcher.start(),
@@ -223,17 +269,7 @@ public class EditorScrollPane extends JScrollPane {
         inputArea.setCaretPosition(position);
     }
     
-    public void editorKeyReleased(java.awt.event.KeyEvent evt) {                                        
-        int keyCode = evt.getKeyCode();
-        if((keyCode >= 65 && keyCode <= 90) || (keyCode >= 48 && keyCode <= 57)
-            || (keyCode >= 97 && keyCode <= 122 ) || (keyCode != 27 && !(keyCode >= 37
-                && keyCode <= 40) && !(keyCode >= 16
-                && keyCode <= 18) && keyCode !=524 
-                && keyCode != 20)){
-        if (keyCode == KeyEvent.VK_DELETE){
-            
-        }
-        
+    void paiton(){
                 PythonInterpreter interpreter = new PythonInterpreter();
                 System.out.println(inputArea.getText());
                 String[] argumentos = inputArea.getText().split("\\r?\\n");
@@ -271,7 +307,31 @@ public class EditorScrollPane extends JScrollPane {
                 int start = 1;
                 if (start >= 0 && numericValue < lines.length) {
                     respuesta = String.join("\n", Arrays.copyOfRange(lineas, start, numericValue + 1));
-                }               
+                }
+            map.clear();
+            String[] liner = respuesta.split("\n");
+            for (String line : liner) {
+                String[] parts = line.replace("[", "").replace("]", "").split(",");
+                if (parts.length == 2) { // add this line to check the length of parts
+                    String key = parts[0].trim();
+                    String value = parts[1].trim();
+                    map.put(key, value);
+                }
+            }
+    }
+    
+    public void editorKeyReleased(java.awt.event.KeyEvent evt) {                                        
+        int keyCode = evt.getKeyCode();
+        if((keyCode >= 65 && keyCode <= 90) || (keyCode >= 48 && keyCode <= 57)
+            || (keyCode >= 97 && keyCode <= 122 ) || (keyCode != 27 && !(keyCode >= 37
+                && keyCode <= 40) && !(keyCode >= 16
+                && keyCode <= 18) && keyCode !=524 
+                && keyCode != 20)){
+        if (keyCode == KeyEvent.VK_DELETE){
+            
+        }
+        paiton();
+               
             if(!compf.getTitle().contains("*")){
                 compf.setTitle(compf.getTitle()+"*");
             }
