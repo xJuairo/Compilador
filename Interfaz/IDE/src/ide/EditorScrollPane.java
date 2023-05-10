@@ -84,17 +84,17 @@ public class EditorScrollPane extends JScrollPane {
     doc.addDocumentListener(new DocumentListener() {
       @Override
       public void changedUpdate(DocumentEvent e) {
-        colors();
+        CambiarEstilos();
       }
 
       @Override
       public void insertUpdate(DocumentEvent e) {
-        colors();
+        CambiarEstilos();
       }
 
       @Override
       public void removeUpdate(DocumentEvent e) {
-        colors();
+        CambiarEstilos();
       }
     });
     // Setting font
@@ -114,7 +114,7 @@ public class EditorScrollPane extends JScrollPane {
             try {
                 limpiarJFrame();
                 modificarJFrame(respuesta,errores);
-                colors();
+                CambiarEstilos();
             } catch (IOException ex) {
                 Logger.getLogger(EditorScrollPane.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -150,7 +150,7 @@ public class EditorScrollPane extends JScrollPane {
     }
     
     
-    public void colors(){
+    public void CambiarEstilos(){
         position = inputArea.getCaretPosition();
         final StyleContext cont = StyleContext.getDefaultStyleContext();
         
@@ -163,6 +163,7 @@ public class EditorScrollPane extends JScrollPane {
         final AttributeSet colornaranja = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, new Color(200,100,100));
         DefaultStyledDocument doca = new DefaultStyledDocument(){
 
+        @Override
         public void insertString(int offset, String str, AttributeSet a) throws BadLocationException{
 
             super.insertString(offset, str, a);
@@ -170,42 +171,69 @@ public class EditorScrollPane extends JScrollPane {
            String text = getText(0, getLength());
            setCharacterAttributes(0, getLength(), colornegro, true);
            
-            Pattern palabrasReservadas = Pattern.compile("\\b(main|if|IF|else|ELSE|end|END|do|DO|while|then|THEN|WHILE|repeat|REPEAT|until|UNTIL|cin|cout)\\b");
-                Matcher matcher = palabrasReservadas.matcher(text);
+                Pattern reserved_words = Pattern.compile("\\b(main|if|else|end|do|while|then|repeat|until|cin|cout)\\b");
+                Matcher matcher = reserved_words.matcher(text);
                 while (matcher.find()) {
                     setCharacterAttributes(matcher.start(),
                             matcher.end() - matcher.start(), colorrojo, true);
                 }
-                //match NUMEROS
-                Pattern numerosPattern = Pattern.compile("\\b(-?\\d+(\\.\\d+)?)\\b");
-                matcher = numerosPattern.matcher(text);
+                Pattern digits = Pattern.compile("\\b(-?\\d+(\\.\\d+)?)\\b");
+                matcher = digits.matcher(text);
                 while (matcher.find()) {
                     setCharacterAttributes(matcher.start(),
                             matcher.end() - matcher.start(), colormorado, true);
                 }
-                //match tipo de datos
-                Pattern tipoDeDatos = Pattern.compile("\\b(int|INT|real|REAL|boolean|BOOLEAN)\\b");
-                matcher = tipoDeDatos.matcher(text);
+                Pattern data_type = Pattern.compile("\\b(int|real|boolean)\\b");
+                matcher = data_type.matcher(text);
                 while (matcher.find()) {
                     setCharacterAttributes(matcher.start(),
                             matcher.end() - matcher.start(), colorazul, true);
                 }
-                //MATCH VALORES BOOLEANOS
-                Pattern booleanPattern = Pattern.compile("\\b(true|TRUE|false|FALSE)\\b");
-                matcher = booleanPattern.matcher(text);
+                Pattern bool_words = Pattern.compile("\\b(true|false)\\b");
+                matcher = bool_words.matcher(text);
                 while (matcher.find()) {
                     setCharacterAttributes(matcher.start(),
                             matcher.end() - matcher.start(), colornaranja, true);
                 }
-                //MATCH OPERADORES
-                Pattern operatorsPattern = Pattern.compile("[-+*/=<>!]");
-                matcher = operatorsPattern.matcher(text);
+                Pattern arithmetic_operators = Pattern.compile("[-+*/=<>!]");
+                matcher = arithmetic_operators.matcher(text);
                 while (matcher.find()) {
                     setCharacterAttributes(matcher.start(),
                             matcher.end() - matcher.start(), colorverde, true);
                 }
+                Pattern one_line_comments = Pattern.compile("\\/\\/.*");
+                matcher = one_line_comments.matcher(text);
 
-            
+                while (matcher.find()) {
+                    setCharacterAttributes(matcher.start(),
+                            matcher.end() - matcher.start(),colorgris, false);
+                }
+
+                Pattern mutiple_line_comments = Pattern.compile("\\/\\*.*?\\*\\/",
+                        Pattern.DOTALL);
+                matcher = mutiple_line_comments.matcher(text);
+
+                while (matcher.find()) {
+                    setCharacterAttributes(matcher.start(),
+                            matcher.end() - matcher.start(), colorgris, false);
+                }
+            }
+            public void romeve(int offs, int len) throws BadLocationException {
+                super.remove(offs, len);
+
+                String text = getText(0, getLength());
+                int before = findLastNonWordChar(text, offs);
+                if (before < 0) {
+                    before = 0;
+                }
+            }
+        };
+        JTextPane txt = new JTextPane(doca);
+        String temp = this.inputArea.getText();
+        this.inputArea.setStyledDocument(txt.getStyledDocument());
+        this.inputArea.setText(temp);
+        inputArea.setCaretPosition(position);
+    }            
            /* 
             int before = findLastNonWordChar(text, offset);
             if (before < 0) {
@@ -236,41 +264,7 @@ public class EditorScrollPane extends JScrollPane {
                 }
                 wordR++;
             }*/
-                Pattern singleLinecommentsPattern = Pattern.compile("\\/\\/.*");
-                matcher = singleLinecommentsPattern.matcher(text);
 
-                while (matcher.find()) {
-                    setCharacterAttributes(matcher.start(),
-                            matcher.end() - matcher.start(),colorgris, false);
-                }
-
-                Pattern multipleLinecommentsPattern = Pattern.compile("\\/\\*.*?\\*\\/",
-                        Pattern.DOTALL);
-                matcher = multipleLinecommentsPattern.matcher(text);
-
-                while (matcher.find()) {
-                    setCharacterAttributes(matcher.start(),
-                            matcher.end() - matcher.start(), colorgris, false);
-                }
-            }
-
-            public void romeve(int offs, int len) throws BadLocationException {
-                super.remove(offs, len);
-
-                String text = getText(0, getLength());
-                int before = findLastNonWordChar(text, offs);
-                if (before < 0) {
-                    before = 0;
-                }
-            }
-        };
-        JTextPane txt = new JTextPane(doca);
-        String temp = this.inputArea.getText();
-        this.inputArea.setStyledDocument(txt.getStyledDocument());
-        this.inputArea.setText(temp);
-        inputArea.setCaretPosition(position);
-    }
-    
     void paiton(){
                 PythonInterpreter interpreter = new PythonInterpreter();
                 System.out.println(inputArea.getText());
@@ -363,7 +357,6 @@ public class EditorScrollPane extends JScrollPane {
     for (int i = 0; i < size; i++) {
       indentation += " ";
     }
-    // Replace all previous indentations (at beginning of lines)
     inputArea.setText(inputArea.getText().replaceAll(cache, indentation));
   }
 
@@ -374,9 +367,6 @@ public class EditorScrollPane extends JScrollPane {
     return inputArea.getText();
   }
 
-  /*
-   * Overrides the method setText().
-   */
   public void setText(String str) {
     inputArea.setText(str);
   }

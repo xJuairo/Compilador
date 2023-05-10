@@ -2,49 +2,90 @@
 import sys
 import re
 
-argumentos = ""
-for i in range(0,len(sys.argv)):
-    argumentos += str(sys.argv[i])
-    argumentos+='\n'
-
-# Diccionarios de tokens
-palabras_reservadas = {"then":"palabra reservada","if": "palabra reservada", "else": "palabra reservada", "end": "palabra reservada", "do": "palabra reservada", "while": "palabra reservada", "repeat": "palabra reservada", "until": "palabra reservada", "cin": "palabra reservada", "cout": "palabra reservada", "real": "palabra reservada", "int": "palabra reservada", "boolean": "palabra reservada", "true": "palabra reservada", "false": "palabra reservada", "main":"palabra reservada"}
+argumentos = '\n'.join(map(str, sys.argv))
+# Lista de palabras reservadas
+palabras_reservadas = {
+    "then": "reserved word",
+    "if": "reserved word",
+    "else": "reserved word",
+    "end": "reserved word",
+    "do": "reserved word",
+    "while": "reserved word",
+    "repeat": "reserved word",
+    "until": "reserved word",
+    "cin": "reserved word",
+    "cout": "reserved word",
+    "real": "reserved word",
+    "int": "reserved word",
+    "boolean": "reserved word",
+    "true": "reserved word",
+    "false": "reserved word",
+    "main": "reserved word"
+}
 palabras_reservadas_key = palabras_reservadas.keys()
-puntuacion_grupos = {"(": "parentesis abierto", ")": "parentesis cerrado", "{": "llave abierto", "}": "llave cerrado", ";": "punto y coma", ",": "coma"}
+# Lista de puntuación
+puntuacion_grupos = {
+    "(": "open parenthesis",
+    ")": "close parenthesis",
+    "{": "open brace",
+    "}": "close brace",
+    ";": "semicolon",
+    ",": "comma"
+}
 puntuacion_grupos_key = puntuacion_grupos.keys()
-aritmetica = {"+": "operador suma", "-": "operador resta", "*": "operador multiplicacion", "/": "operador division", "=": "operador asignacion"}
+# Lista de operadores aritméticos
+aritmetica = {
+    "+": "addition operator",
+    "-": "subtraction operator",
+    "*": "multiplication operator",
+    "/": "division operator",
+    "=": "assignment operator"
+}
 aritmetica_key = aritmetica.keys()
-comparaciones = {"==": "exactamente igual", "!=": "diferente", "<>":"diferente","<": "menor que", ">": "mayor que", "<=": "menor o igual que", ">=": "mayor o igual que"}
+# Lista de operadores de comparación
+comparaciones = {
+    "==": "equal to",
+    "!=": "not equal to",
+    "<>": "not equal to",
+    "<": "less than",
+    ">": "greater than",
+    "<=": "less than or equal to",
+    ">=": "greater than or equal to"
+}
 comparaciones_key = comparaciones.keys()
-logicos = {"&&": "operador and", "||": "operador or", "!": "operador not"}
+# Lista de operadores lógicos
+logicos = {
+    "&&": "and operator",
+    "||": "or operator",
+    "!": "not operator"
+}
 logicos_key = logicos.keys()
-dobles = {"++": "operador incremento", "--": "operador decremento"}
+# Lista de operadores dobles
+dobles = {
+    "++": "increment operator",
+    "--": "decrement operator"
+}
 dobles_key = dobles.keys()
-# Tokenizar argumentos
 tokens = []
-errores = []
-linea = 1
+errors = []
+row = 1
 col = 1
 i = 0
 cadena = ''
 while i < len(argumentos):
-    # Ignorar espacios en blanco
     col+=1
     if argumentos[i].isspace():
         if (argumentos[i] == "\n"):
-            linea +=1
+            row +=1
             col = 1
         i += 1
         continue
-    # Identificar comentarios de una línea
     if argumentos[i:i+2] == "//":
         i = argumentos.index("\n", i)
         continue
-    # Identificar comentarios multilinea
     if argumentos[i:i+2] == "/*":
         i = argumentos.index("*/", i) + 2
         continue
-    # Identificar palabras reservadas, identificadores y números
     if argumentos[i].isalpha():
         j = i + 1
         while j < len(argumentos) and (argumentos[j].isalnum() or argumentos[j] == "_"):
@@ -53,7 +94,7 @@ while i < len(argumentos):
         if token in palabras_reservadas:
             tokens.append("[" + token + ", "  + palabras_reservadas[token] +"]")
         else:
-            tokens.append("[" + token + ", ídentificador]")
+            tokens.append("[" + token + ", identifier]")
         i = j
         continue
     elif argumentos[i].isdigit():
@@ -64,17 +105,15 @@ while i < len(argumentos):
             j += 1
             while j < len(argumentos) and argumentos[j].isdigit():
                 j += 1
-            tokens.append("[" + argumentos[i:j] + ", flotante]")
+            tokens.append("[" + argumentos[i:j] + ", float]")
         else:
-            tokens.append("[" + argumentos[i:j] + ", entero]")
+            tokens.append("[" + argumentos[i:j] + ", integer]")
         i = j
         continue
-    # Identificar símbolos especiales
     if argumentos[i] in puntuacion_grupos:
         tokens.append("[" + argumentos[i] + ", " +puntuacion_grupos[argumentos[i]]+"]")
         i += 1
         continue
-    # Identificar operadores aritméticos y relacionales
     if argumentos[i:i+2] in comparaciones:
         tokens.append("[" + argumentos[i:i+2] +"," + comparaciones[argumentos[i:i+2]] +"]")
         i += 2
@@ -92,18 +131,17 @@ while i < len(argumentos):
         i +=1
         continue
     else:
-        errores.append("["+argumentos[i]+", error en linea:" + str(linea) +", columna: " + str(col+1) + "]")
+        errors.append("["+argumentos[i]+", error at row:" + str(row) +", column: " + str(col+1) + "]")
         i+=1
         continue
 arch = open("tokens.txt","w")
-arche = open("errores.txt","w")
+arche = open("errors.txt","w")
 print(len(tokens))
 for item in tokens:
     print(item)
     arch.write(item + "\n")
 arch.close()
-for item in errores:
+for item in errors:
     print(item)
     arche.write(item + "\n")
 arche.close()
-    
