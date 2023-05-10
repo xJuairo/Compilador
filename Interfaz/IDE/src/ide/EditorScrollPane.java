@@ -114,6 +114,7 @@ public class EditorScrollPane extends JScrollPane {
             try {
                 limpiarJFrame();
                 modificarJFrame(respuesta,errores);
+                colors();
             } catch (IOException ex) {
                 Logger.getLogger(EditorScrollPane.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -167,6 +168,7 @@ public class EditorScrollPane extends JScrollPane {
             super.insertString(offset, str, a);
             
            String text = getText(0, getLength());
+           setCharacterAttributes(0, getLength(), colornegro, true);
            
             Pattern palabrasReservadas = Pattern.compile("\\b(main|if|IF|else|ELSE|end|END|do|DO|while|then|THEN|WHILE|repeat|REPEAT|until|UNTIL|cin|cout)\\b");
                 Matcher matcher = palabrasReservadas.matcher(text);

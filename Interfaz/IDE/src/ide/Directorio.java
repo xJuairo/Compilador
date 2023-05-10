@@ -245,6 +245,7 @@ public class Directorio {
                         String t = getTextFile(tFile);
                         if(t!=null){
                             compF.editor.setText(t);
+                            System.out.println(t);
                             compF.setTitle(tFile.getName());
                             compF.clearAllComp();
                             selecFile = tSelecFile;

@@ -1,0 +1,6 @@
+[&, error en linea:1, columna: 9]
+[@, error en linea:1, columna: 14]
+[., error en linea:2, columna: 12]
+[., error en linea:2, columna: 14]
+[!, error en linea:40, columna: 5]
+[., error en linea:40, columna: 8]
