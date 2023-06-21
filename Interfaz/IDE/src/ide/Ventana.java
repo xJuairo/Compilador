@@ -84,14 +84,14 @@ public class Ventana extends javax.swing.JFrame {
     public void Sintactico(){
         String rutaActual = System.getProperty("user.dir");
         System.out.println("Ruta actual: " + rutaActual);
-        Path rutaNueva = Paths.get(rutaActual).getParent().getParent().getParent();
+        Path rutaNueva = Paths.get(rutaActual).getParent().getParent();
         System.out.println("Ruta nueva: " + rutaNueva.toString());
         Path ruta = Paths.get(rutaNueva.toString(),"AnalizadorLexico");
         System.out.println(ruta);
         Path rutaScript = Paths.get(ruta.toString()).resolve("analizadorsintactico.py");
         
         try {
-            String salidaPython = PythonRunner.ejecutarScriptPython("C:\\Users\\xjlop\\OneDrive\\Documentos\\Compilador\\Compilador\\AnalizadorLexico\\analizadorsintactico.py");
+            String salidaPython = PythonRunner.ejecutarScriptPython(rutaScript.toString());
             SintacticoCode.setText(salidaPython);
         } catch (IOException e) {
             e.printStackTrace();
