@@ -5,7 +5,7 @@
 [,, comma]
 [y, identifier]
 [;, semicolon]
-[float, reserved word]
+[float, identifier]
 [a, identifier]
 [,, comma]
 [w, identifier]

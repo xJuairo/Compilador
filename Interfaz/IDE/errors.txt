@@ -1,6 +1,0 @@
-[&, error at row:1, column: 9]
-[@, error at row:1, column: 14]
-[., error at row:2, column: 12]
-[., error at row:2, column: 14]
-[!, error at row:40, column: 5]
-[., error at row:40, column: 8]

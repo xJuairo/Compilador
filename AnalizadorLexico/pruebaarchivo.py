@@ -17,6 +17,7 @@ palabras_reservadas = {
     "cout": "reserved word",
     "real": "reserved word",
     "int": "reserved word",
+    "float": "reserved word",
     "boolean": "reserved word",
     "true": "reserved word",
     "false": "reserved word",
@@ -115,19 +116,19 @@ while i < len(argumentos):
         i += 1
         continue
     if argumentos[i:i+2] in comparaciones:
-        tokens.append("[" + argumentos[i:i+2] +"," + comparaciones[argumentos[i:i+2]] +"]")
+        tokens.append("[" + argumentos[i:i+2] +", " + comparaciones[argumentos[i:i+2]] +"]")
         i += 2
         continue
     elif argumentos[i] in comparaciones:
-        tokens.append("[" + argumentos[i] + "," + comparaciones[argumentos[i]] +"]")
+        tokens.append("[" + argumentos[i] + ", " + comparaciones[argumentos[i]] +"]")
         i += 1
         continue
     if argumentos[i:i+2] in dobles:
-        tokens.append("[" +argumentos[i:i+2] + "," + dobles[argumentos[i:i+2]] +"]")
+        tokens.append("[" +argumentos[i:i+2] + ", " + dobles[argumentos[i:i+2]] +"]")
         i += 2
         continue
     elif argumentos[i] in aritmetica:
-        tokens.append("[" + argumentos[i] + ","+ aritmetica[argumentos[i]] + "]")
+        tokens.append("[" + argumentos[i] + ", "+ aritmetica[argumentos[i]] + "]")
         i +=1
         continue
     else:
@@ -135,6 +136,7 @@ while i < len(argumentos):
         i+=1
         continue
 arch = open("tokens.txt","w")
+archi = open("tokensformateados.txt","w")
 arche = open("errors.txt","w")
 print(len(tokens))
 for item in tokens:
@@ -145,3 +147,29 @@ for item in errors:
     print(item)
     arche.write(item + "\n")
 arche.close()
+archs = open("tokens.txt","r")
+cadena = archs.read()
+
+# # Paso 1: Separar la cadena por saltos de línea
+lineas = cadena.split('\n')
+
+# # Paso 2: Crear una lista de sublistas con dos columnas
+array_dos_columnas = [linea.strip('[]').split(', ') for linea in lineas if linea.strip()]
+
+array = []
+
+# # Imprimir el resultado
+for fila in array_dos_columnas:
+    valor1 = fila[1]
+    valor2 = fila[0]
+    if valor1 == "identifier":
+        valor1 = "id"
+    elif valor1 == "integer" or valor1 == "float":
+        valor1 = "num"
+    else:
+        valor1 = valor2
+    array.append([valor1, valor2])
+for row in array:
+    archi.write(str(row) + "\n")
+archs.close()
+archi.close()

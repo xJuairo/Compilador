@@ -10,6 +10,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -25,6 +28,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
+import org.python.core.PyObject;
 import org.python.util.PythonInterpreter;
 
 /**
@@ -76,7 +80,24 @@ public class Ventana extends javax.swing.JFrame {
         //editor.colors();
         initComponents();
     }
-
+    
+    public void Sintactico(){
+        String rutaActual = System.getProperty("user.dir");
+        System.out.println("Ruta actual: " + rutaActual);
+        Path rutaNueva = Paths.get(rutaActual).getParent().getParent().getParent();
+        System.out.println("Ruta nueva: " + rutaNueva.toString());
+        Path ruta = Paths.get(rutaNueva.toString(),"AnalizadorLexico");
+        System.out.println(ruta);
+        Path rutaScript = Paths.get(ruta.toString()).resolve("analizadorsintactico.py");
+        
+        try {
+            String salidaPython = PythonRunner.ejecutarScriptPython("C:\\Users\\xjlop\\OneDrive\\Documentos\\Compilador\\Compilador\\AnalizadorLexico\\analizadorsintactico.py");
+            SintacticoCode.setText(salidaPython);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
     public void obtenerRespuesta(String resp, String err) throws IOException{
         File archivo = new File("Tokens.txt");
         FileWriter writer = new FileWriter(archivo);
@@ -339,8 +360,7 @@ public class Ventana extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenu3MouseClicked
 
     private void jMenu4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu4MouseClicked
-        editor.CambiarEstilos();
-        editor.paiton();
+        Sintactico();
         JOptionPane.showMessageDialog(rootPane, "Compilado");
     }//GEN-LAST:event_jMenu4MouseClicked
 
@@ -421,3 +441,4 @@ public class Ventana extends javax.swing.JFrame {
     private javax.swing.JTabbedPane jTabbedPane3;
     // End of variables declaration//GEN-END:variables
 }
+

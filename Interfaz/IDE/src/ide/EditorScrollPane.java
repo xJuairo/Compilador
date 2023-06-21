@@ -183,7 +183,7 @@ public class EditorScrollPane extends JScrollPane {
                     setCharacterAttributes(matcher.start(),
                             matcher.end() - matcher.start(), colormorado, true);
                 }
-                Pattern data_type = Pattern.compile("\\b(int|real|boolean)\\b");
+                Pattern data_type = Pattern.compile("\\b(int|real|boolean|float)\\b");
                 matcher = data_type.matcher(text);
                 while (matcher.find()) {
                     setCharacterAttributes(matcher.start(),
@@ -285,6 +285,7 @@ public class EditorScrollPane extends JScrollPane {
                 interpreter.exec(
                         "import sys\n"
                         + "sys.argv = " + ArgumentosString);
+                System.out.println(ArgumentosString);
                 interpreter.execfile("../../AnalizadorLexico/pruebaarchivo.py");
                 String output = outputStream.toString();
                 String resp = output;
@@ -315,6 +316,8 @@ public class EditorScrollPane extends JScrollPane {
                 }
             }
     }
+    
+    
     
     public void editorKeyReleased(java.awt.event.KeyEvent evt) {                                        
         int keyCode = evt.getKeyCode();
