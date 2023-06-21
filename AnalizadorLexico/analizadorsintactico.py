@@ -151,18 +151,18 @@ class Parser:
         elif self.current_token and self.current_token.token_type == "cin":
             root = Node("InputStatement")
             self.match("cin")
-            self.match(">>")
             root.add_child(self.idList())
             self.match(";")
         elif self.current_token and self.current_token.token_type == "cout":
             root = Node("OutputStatement")
             self.match("cout")
-            self.match("<<")
             root.add_child(self.idList())
             self.match(";")
         else:
             root = Node("Error")
-            self.errors.append(f"Invalid statement: {self.current_token.value}")
+            error_token = self.current_token.value if self.current_token else None
+            if error_token:
+                self.errors.append(f"Sentencia inválida: {error_token}")
             self.advance()
         return root
 
@@ -266,10 +266,18 @@ if parser.errors:
     for error in parser.errors:
         print(error)
 
-# Print AST
+# # Print AST
+# def print_ast(node, level=0):
+#     indent = " | " * level
+#     print(indent + node.value)
+#     for child in node.children:
+#         print_ast(child, level + 1)
+
+# print("Abstract Syntax Tree:")
+# print_ast(ast)
 def print_ast(node, level=0):
-    indent = " | " * level
-    print(indent + node.value)
+    indent = "  " * level
+    print(f"{indent}- {node.value}")
     for child in node.children:
         print_ast(child, level + 1)
 
