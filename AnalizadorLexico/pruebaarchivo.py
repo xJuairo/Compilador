@@ -73,12 +73,15 @@ row = 1
 col = 1
 i = 0
 cadena = ''
+line_number = 1  # Inicializa el número de línea en 1
+
 while i < len(argumentos):
-    col+=1
+    col += 1
     if argumentos[i].isspace():
         if (argumentos[i] == "\n"):
-            row +=1
+            row += 1
             col = 1
+            line_number += 1  # Incrementa el número de línea
         i += 1
         continue
     if argumentos[i:i+2] == "//":
@@ -93,9 +96,9 @@ while i < len(argumentos):
             j += 1
         token = argumentos[i:j]
         if token in palabras_reservadas:
-            tokens.append("[" + token + ", "  + palabras_reservadas[token] +"]")
+            tokens.append("[" + token + ", " + palabras_reservadas[token] + ", " + str(line_number) + "]")
         else:
-            tokens.append("[" + token + ", identifier]")
+            tokens.append("[" + token + ", identifier, " + str(line_number) + "]")
         i = j
         continue
     elif argumentos[i].isdigit():
@@ -106,34 +109,34 @@ while i < len(argumentos):
             j += 1
             while j < len(argumentos) and argumentos[j].isdigit():
                 j += 1
-            tokens.append("[" + argumentos[i:j] + ", float]")
+            tokens.append("[" + argumentos[i:j] + ", float, " + str(line_number) + "]")
         else:
-            tokens.append("[" + argumentos[i:j] + ", integer]")
+            tokens.append("[" + argumentos[i:j] + ", integer, " + str(line_number) + "]")
         i = j
         continue
     if argumentos[i] in puntuacion_grupos:
-        tokens.append("[" + argumentos[i] + ", " +puntuacion_grupos[argumentos[i]]+"]")
+        tokens.append("[" + argumentos[i] + ", " + puntuacion_grupos[argumentos[i]] + ", " + str(line_number) + "]")
         i += 1
         continue
     if argumentos[i:i+2] in comparaciones:
-        tokens.append("[" + argumentos[i:i+2] +", " + comparaciones[argumentos[i:i+2]] +"]")
+        tokens.append("[" + argumentos[i:i+2] + ", " + comparaciones[argumentos[i:i+2]] + ", " + str(line_number) + "]")
         i += 2
         continue
     elif argumentos[i] in comparaciones:
-        tokens.append("[" + argumentos[i] + ", " + comparaciones[argumentos[i]] +"]")
+        tokens.append("[" + argumentos[i] + ", " + comparaciones[argumentos[i]] + ", " + str(line_number) + "]")
         i += 1
         continue
     if argumentos[i:i+2] in dobles:
-        tokens.append("[" +argumentos[i:i+2] + ", " + dobles[argumentos[i:i+2]] +"]")
+        tokens.append("[" + argumentos[i:i+2] + ", " + dobles[argumentos[i:i+2]] + ", " + str(line_number) + "]")
         i += 2
         continue
     elif argumentos[i] in aritmetica:
-        tokens.append("[" + argumentos[i] + ", "+ aritmetica[argumentos[i]] + "]")
-        i +=1
+        tokens.append("[" + argumentos[i] + ", " + aritmetica[argumentos[i]] + ", " + str(line_number) + "]")
+        i += 1
         continue
     else:
-        errors.append("["+argumentos[i]+", error at row:" + str(row) +", column: " + str(col+1) + "]")
-        i+=1
+        errors.append("[" + argumentos[i] + ", error at row:" + str(row) + ", column: " + str(col + 1) + "]")
+        i += 1
         continue
 arch = open("tokens.txt","w")
 archi = open("tokensformateados.txt","w")
@@ -162,13 +165,14 @@ array = []
 for fila in array_dos_columnas:
     valor1 = fila[1]
     valor2 = fila[0]
+    valor3 = fila[2]
     if valor1 == "identifier":
         valor1 = "id"
     elif valor1 == "integer" or valor1 == "float":
         valor1 = "num"
     else:
         valor1 = valor2
-    array.append([valor1, valor2])
+    array.append([valor1, valor2, valor3])
 for row in array:
     archi.write(str(row) + "\n")
 archs.close()

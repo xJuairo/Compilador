@@ -4,15 +4,20 @@
  */
 package ide;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -69,7 +74,9 @@ public class Ventana extends javax.swing.JFrame {
         JMenuItem item4 = new JMenuItem("Guardar Como");
         JTextArea errores = new JTextArea();
         JTextArea resultados = new JTextArea();
-        jPanel1.add(editor);
+
+        jPanel1.setLayout(new BorderLayout());
+        jPanel1.add(editor, BorderLayout.CENTER);
         this.add(jPanel1);
         editor.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -79,6 +86,48 @@ public class Ventana extends javax.swing.JFrame {
         });
         //editor.colors();
         initComponents();
+    }
+    
+    public void SymbolTable(){
+        try {
+            String rutaActual = System.getProperty("user.dir");
+            System.out.println("Ruta actual: " + rutaActual);
+            Path rutaArchivo = Paths.get(rutaActual.toString()).resolve("TablaSimbolos.txt");
+            System.out.println(rutaArchivo);
+            // Ruta al archivo de texto en tu proyecto
+            Font consolasFont = new Font("Consolas", Font.PLAIN, 14);
+            tabla.setFont(consolasFont);
+            // Abre el archivo y crea un lector (BufferedReader) para leer su contenido
+            List<String> lineas = Files.readAllLines(rutaArchivo);
+
+            // Iterar a través de las líneas y mostrar su contenido
+            for (String linea : lineas) {
+                System.out.println(linea);
+                tabla.append(linea+ "\n");
+            }
+            // Establece el contenido del JTextArea con el contenido del archivo
+            
+        } catch (Exception e) {
+            e.printStackTrace();  // Manejo de excepciones, puedes personalizarlo según tus necesidades.
+        }
+
+    }
+    
+    public void Semantico(){
+        String rutaActual = System.getProperty("user.dir");
+        System.out.println("Ruta actual: " + rutaActual);
+        Path rutaNueva = Paths.get(rutaActual).getParent().getParent();
+        System.out.println("Ruta nueva: " + rutaNueva.toString());
+        Path ruta = Paths.get(rutaNueva.toString(),"AnalizadorLexico");
+        System.out.println(ruta);
+        Path rutaScript = Paths.get(ruta.toString()).resolve("asemantico.py");
+        
+        try {
+            String salidaPython = PythonRunner.ejecutarScriptPython(rutaScript.toString());
+            SemanticoCode.setText(salidaPython);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     
     public void Sintactico(){
@@ -128,6 +177,8 @@ public class Ventana extends javax.swing.JFrame {
         ErroresCode = new javax.swing.JTextArea();
         jScrollPane3 = new javax.swing.JScrollPane();
         ResultadosCode = new javax.swing.JTextArea();
+        TabladeSimbolos = new javax.swing.JScrollPane();
+        tabla = new javax.swing.JTextArea();
         jTabbedPane3 = new javax.swing.JTabbedPane();
         jScrollPane4 = new javax.swing.JScrollPane();
         LexicoCode = new javax.swing.JTextArea();
@@ -175,6 +226,12 @@ public class Ventana extends javax.swing.JFrame {
         jScrollPane3.setViewportView(ResultadosCode);
 
         jTabbedPane1.addTab("Resultados", jScrollPane3);
+
+        tabla.setColumns(20);
+        tabla.setRows(5);
+        TabladeSimbolos.setViewportView(tabla);
+
+        jTabbedPane1.addTab("Tabla de simbolos", TabladeSimbolos);
 
         getContentPane().add(jTabbedPane1, java.awt.BorderLayout.PAGE_END);
 
@@ -360,7 +417,9 @@ public class Ventana extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenu3MouseClicked
 
     private void jMenu4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu4MouseClicked
+        SymbolTable();
         Sintactico();
+        Semantico();
         JOptionPane.showMessageDialog(rootPane, "Compilado");
     }//GEN-LAST:event_jMenu4MouseClicked
 
@@ -420,6 +479,7 @@ public class Ventana extends javax.swing.JFrame {
     private javax.swing.JTextArea ResultadosCode;
     private javax.swing.JTextArea SemanticoCode;
     private javax.swing.JTextArea SintacticoCode;
+    private javax.swing.JScrollPane TabladeSimbolos;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
@@ -439,6 +499,7 @@ public class Ventana extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane3;
+    private javax.swing.JTextArea tabla;
     // End of variables declaration//GEN-END:variables
 }
 

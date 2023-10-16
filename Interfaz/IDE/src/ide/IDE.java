@@ -17,7 +17,6 @@ public class IDE {
      */
     public static void main(String[] args) {
         Ventana ventana = new Ventana();
-        ventana.setResizable(false);
         ventana.setPreferredSize(new Dimension(900,600));
         ventana.setLocationRelativeTo(null);
         ventana.setVisible(true);

@@ -1,0 +1,32 @@
+Arbol Sintactico
+- Program
+  - Statements
+    - IntDeclaration
+      - IdList
+        - x
+    - FloatDeclaration
+      - IdList
+        - y
+    - Assignment
+      - x
+      - 1
+    - WhileStatement
+      - >
+        - x
+        - 9
+      - Block
+        - Statements
+          - Assignment
+            - x
+            - +
+              - 5
+              - 1
+          - Assignment
+            - y
+            - +
+              - *
+                - /
+                  - 3
+                  - 2
+                - 3
+              - 4

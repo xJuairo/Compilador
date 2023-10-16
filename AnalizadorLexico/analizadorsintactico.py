@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 class Token:
-    def __init__(self, token_type, value):
+    def __init__(self, token_type, value, line_number):
         self.token_type = token_type
         self.value = value
+        self.line_number = line_number
 
 
 class Node:
@@ -35,7 +36,8 @@ class Parser:
         else:
             expected_token = token_type if token_type else "end of input"
             found_token = self.current_token.token_type if self.current_token else "end of input"
-            self.errors.append(f"Expected {expected_token}, found {found_token}")
+            line_number = self.current_token.line_number if self.current_token else None
+            self.errors.append(f"Error in line {line_number}: Expected '{expected_token}', found '{found_token}'")
             self.advance()
 
     def program(self):
@@ -241,20 +243,23 @@ class Parser:
 with open('tokensformateados.txt', 'r') as file:
     lines = file.readlines()
 
-# Crear la lista de objetos Token
 token_list = []
+
 for line in lines:
-    line = line.strip("'\n[]")  # Eliminar los caracteres no deseados
-    token_type, value = line.split("', '")  # Dividir la línea en tipo y valor
-    token = Token(token_type, value)  # Crear el objeto Token
-    token_list.append(token)  # Agregar el objeto a la lista
+    line = line.strip("'\n[]")
+    if line:
+        token_parts = line.split("', '")
+        value = token_parts[0].strip()
+        token_type = token_parts[1].strip()
+        line_number = token_parts[2].strip()
+        token_list.append(Token(value, token_type, line_number))
 
 # Imprimir la lista de objetos Token
 for tok in token_list:
     try:
         _ = tok.token_type  # Intentar acceder al atributo 'value'
     except AttributeError:
-        print(f"El registro {tok} puede generar el error 'NoneType' object has no attribute 'value'")
+        print(f"Register {tok} cant generate 'NoneType' object has no attribute 'value'")
 
 
 parser = Parser(token_list)
