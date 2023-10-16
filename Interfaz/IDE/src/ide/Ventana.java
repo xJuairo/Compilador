@@ -90,6 +90,7 @@ public class Ventana extends javax.swing.JFrame {
     
     public void SymbolTable(){
         try {
+            tabla.setText(" ");
             String rutaActual = System.getProperty("user.dir");
             System.out.println("Ruta actual: " + rutaActual);
             Path rutaArchivo = Paths.get(rutaActual.toString()).resolve("TablaSimbolos.txt");
