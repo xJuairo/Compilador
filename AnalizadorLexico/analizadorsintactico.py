@@ -158,7 +158,7 @@ class Parser:
         elif self.current_token and self.current_token.token_type == "cout":
             root = Node("OutputStatement")
             self.match("cout")
-            root.add_child(self.idList())
+            root.add_child(self.expr())
             self.match(";")
         else:
             root = Node("Error")

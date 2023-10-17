@@ -1,10 +1,7 @@
 Error in line 3: Variable x, Already declared 
 Error in line 3: Variable a, Already declared 
-Error in line 4: wrong type
-Error in line 10: wrong type
-Error in line 11: wrong type
-Error in line 12: wrong type
-Error in line 13: wrong type
-Error in line 15: wrong type
-Error in line 31: wrong type
-Error in line 33: Variable 'mas' undefined.
+Error in line 4: Variable 'suma' undefined.
+Error in line 5: wrong type
+Error in line 14: wrong type
+Error in line 16: wrong type
+Error in line 37: Variable 'mas' undefined.

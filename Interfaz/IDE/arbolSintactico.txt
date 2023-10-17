@@ -14,6 +14,9 @@ Arbol Sintactico
         - x
         - a
     - Assignment
+      - suma
+      - 45
+    - Assignment
       - x
       - 32.32
     - Assignment
@@ -121,6 +124,21 @@ Arbol Sintactico
               - +
                 - y
                 - 1
+    - Assignment
+      - a
+      - +
+        - a
+        - 1
+    - Assignment
+      - c
+      - -
+        - c
+        - 1
+    - Assignment
+      - x
+      - +
+        - 3
+        - 4
     - DoWhileStatement
       - Block
         - Statements

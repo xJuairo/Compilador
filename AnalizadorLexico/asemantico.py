@@ -1,7 +1,4 @@
 # -*- coding: utf-8 -*-
-
-
-
 class Token:
     def __init__(self, token_type, value, line_no):
         self.token_type = token_type
@@ -20,6 +17,7 @@ class Node:
         self.children = children or []
         self.line_no = line_no or None
         self.type = None  # Nuevo atributo para el tipo
+        self.identificator = False
         self.val = None  # Nuevo atributo para el valor
 
     def add_child(self, node):
@@ -45,14 +43,14 @@ class Parser:
         if self.current_token and self.current_token.token_type == token_type:
             self.advance()
         else:
-            expected_token = token_type if token_type else "fin de entrada"
+            expected_token = token_type if token_type else "end of input"
             found_token = (
                 self.current_token.token_type
                 if self.current_token
-                else "fin de entrada"
+                else "end of input"
             )
             self.errors.append(
-                f"Se esperaba {expected_token}, se encontró {found_token}"
+                f"Expected {expected_token}, found {found_token}"
             )
             self.advance()
 
@@ -127,6 +125,7 @@ class Parser:
         elif self.current_token and self.current_token.token_type == "id":
             root = Node("Assignment", self.current_token.line_no)
             id_node = Node(self.current_token.value, self.current_token.line_no)
+            id_node.identificator = True
             self.match("id")
             root.add_child(id_node)
             if self.current_token and self.current_token.token_type in ["++", "--"]:
@@ -206,7 +205,6 @@ class Parser:
             self.match("}")
         elif self.current_token and self.current_token.token_type == "cin":
             root = Node("InputStatement", self.current_token.line_no)
-
             self.match("cin")
             root.add_child(self.idList())
             self.match(";")
@@ -392,12 +390,20 @@ class SymbolTable:
 
     def __init__(self):
         self.symbols = {}
-
+    def insertLine(self, name, line):
+        var = self.lookup(name)
+        if(var != None):
+            self.symbols[name]["values"][-1] = (
+                    var[0],
+                    var[1],
+                    var[2]
+                )
+            self.symbols[name]["lines"].append(line)
     def insert(self, name, value, datatype, location, line, shouldntExist=False):
         if name in self.symbols:
             if shouldntExist:
                 errores_semantico.append(f"Error in line {line}: Variable {name}, Already declared ")
-                return
+                return -1
             # Resolución de colisiones por encadenamiento
             var = self.lookup(name)
             self.symbols[name]["values"][-1] = (
@@ -439,14 +445,26 @@ class SymbolTable:
                 node.val = left_value - right_value
                 return left_value - right_value
             elif node.value == "*":
-                node.val = left_value * right_value
-                return left_value * right_value
+                if(node.type =="int"):
+                    node.val = int(left_value * right_value)
+                    return node.val
+                else: 
+                    node.val = left_value * right_value
+                    return node.val
             elif node.value == "/":
-                node.val = left_value / right_value
-                return left_value / right_value
+                if(node.type =="int"):
+                    node.val = int(left_value / right_value)
+                    return node.val
+                else: 
+                    node.val = left_value / right_value
+                    return node.val
             elif node.value == "%":
-                node.val = left_value % right_value
-                return left_value % right_value
+                if(node.type =="int"):
+                    node.val = int(left_value % right_value)
+                    return node.val
+                else: 
+                    node.val = left_value % right_value
+                    return node.val
         elif node.value in ("==", "<=", "<", ">", ">=", "!="):
             left_value = self.evaluate_expression(node.children[0])
             right_value = self.evaluate_expression(node.children[1])
@@ -497,6 +515,8 @@ class SymbolTable:
                 var_name = node.value
                 var_info = self.lookup(var_name)
                 if(var_info != None):
+                    #print(f"AAAAA {node.value}, {node.line_no}")
+                    symbol_table.insertLine(node.value, node.line_no)
                     if var_info[1] == "int":
                         node.val = var_info[0]
                         node.type = var_info[1]
@@ -532,9 +552,24 @@ class SymbolTable:
             return False
 
     def print_symbol_table(self):
-        f.write("+----------------+-----------+-----------+-------------------+------------------+\n")
-        f.write("|     Name       |   Type    |   Value   |  Register (loc)   |   Line number    |\n")
-        f.write("+----------------+-----------+-----------+-------------------+------------------+\n")
+        # Cálculo de la longitud máxima del número de línea
+        max_line_length = max(len(str(info["lines"])) for info in self.symbols.values())
+
+        # Encabezado de la tabla
+       
+        # Línea superior de la tabla
+        f.write("+----------------+-----------+-----------+-------------------+")
+        f.write("-" * (max_line_length+2))
+        f.write("+\n")
+
+        header = "|     Name       |   Type    |   Value   |  Register (loc)   | {:^" + str(max_line_length) + "} |\n"
+        f.write(header.format("Line number"))
+
+        # Línea de separación
+        f.write("+----------------+-----------+-----------+-------------------+")
+        f.write("-" * (max_line_length+2))
+        f.write("+\n")
+
         for name, symbol_info in self.symbols.items():
             for value, datatype, location in symbol_info["values"]:
                 lines = ", ".join(str(line) for line in symbol_info["lines"])
@@ -542,11 +577,14 @@ class SymbolTable:
                 name_shortened = (name[:11] + '...') if len(name) > 14 else name
                 # Limitar la longitud del valor (Value) a 9 caracteres y agregar puntos suspensivos
                 value_shortened = (str(value)[:6] + '...') if len(str(value)) > 9 else str(value)
-                # Limitar la longitud del número de línea (Lines) a 16 caracteres y agregar puntos suspensivos
-                lines_shortened = (lines[:13] + '...') if len(lines) > 16 else lines
-                formatted_line = "| {:^14} | {:^9} | {:^9} | {:^17} | {:^16} |\n".format(name_shortened, datatype, value_shortened, str(location), lines_shortened)
-                f.write(formatted_line)
-        f.write("+----------------+-----------+-----------+-------------------+------------------+\n")
+                # Formato de línea con ancho de columna para Line number
+                formatted_line = "| {:^14} | {:^9} | {:^9} | {:^17} | {:^" + str(max_line_length) + "} |\n"
+                f.write(formatted_line.format(name_shortened, datatype, value_shortened, str(location), lines))
+        
+        # Línea inferior de la tabla
+        f.write("+----------------+-----------+-----------+-------------------+")
+        f.write("-" * (max_line_length+2))
+        f.write("+\n")
 
 def semantic_analysis(node, symbol_table):
     # Define una función para verificar si la expresión es booleana
@@ -582,8 +620,10 @@ def semantic_analysis(node, symbol_table):
                 id_node.val = False
             else: 
                 id_node.val = 0
-            symbol_table.insert(id_node.value, id_node.val , datatype, None, node.line_no, shouldntExist=True)
-
+            status = symbol_table.insert(id_node.value, id_node.val , datatype, None, node.line_no, shouldntExist=True)
+            if( status == -1):
+                print(f"Error in line {node.line_no}: Variable {id_node.value}, Already declared ")
+                id_node.val = "Error"
     for child in node.children:
         semantic_analysis(child, symbol_table)
 
@@ -604,7 +644,7 @@ def semantic_analysis(node, symbol_table):
             else: 
                 node.val = var_value
                 node.type = var_type
-                node.children[0].val = var_value
+                #node.children[0].val = var_value
                 symbol_table.insert(var_name, var_value, var_type, None, node.line_no)
 
     if node.value == "IfStatement" or node.value == "WhileStatement":
@@ -624,9 +664,13 @@ def semantic_analysis(node, symbol_table):
             )
             errores_semantico.append(f"Error in line {expr_node.line_no}: Wrong expresion in statement.")
         else:
-            var_value = symbol_table.evaluate_expression(node.children[1])
+            var_value = symbol_table.evaluate_expression(node.children[-1])
             node.val = var_value
-
+    if node.value == "OutputStatement":
+            var_value = symbol_table.evaluate_expression(node.children[0])
+            node.val = var_value
+    if node.value == "InputStatement":
+             symbol_table.insertLine(node.children[0].children[0].value, node.line_no)
 
 root_node = ast
 

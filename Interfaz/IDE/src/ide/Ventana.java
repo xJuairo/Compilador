@@ -6,6 +6,7 @@ package ide;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
@@ -25,9 +26,11 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultStyledDocument;
@@ -84,13 +87,31 @@ public class Ventana extends javax.swing.JFrame {
                 
             }
         });
+
         //editor.colors();
         initComponents();
+        JSplitPane splitPanev = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+        splitPanev.setTopComponent(splitPane);
+        splitPanev.setBottomComponent(jTabbedPane1);
+        splitPane.setLeftComponent(jTabbedPane3);
+        splitPane.setRightComponent(jPanel1);
+        jTabbedPane1.setPreferredSize(new Dimension(400, 50)); // Ajusta el tamaño según tus necesidades
+        this.add(splitPanev, BorderLayout.CENTER);
+        jTabbedPane3.setPreferredSize(new Dimension(800, 200)); // Ajusta el tamaño según tus necesidades
+        jScrollPane4.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        jScrollPane5.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        jScrollPane6.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        jScrollPane7.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        TabladeSimbolos.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        jScrollPane2.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        jScrollPane3.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
     }
     
     public void SymbolTable(){
         try {
-            tabla.setText(" ");
+            tabla.setText("");
             String rutaActual = System.getProperty("user.dir");
             System.out.println("Ruta actual: " + rutaActual);
             Path rutaArchivo = Paths.get(rutaActual.toString()).resolve("TablaSimbolos.txt");
@@ -236,6 +257,8 @@ public class Ventana extends javax.swing.JFrame {
 
         getContentPane().add(jTabbedPane1, java.awt.BorderLayout.PAGE_END);
 
+        jTabbedPane3.setMinimumSize(new java.awt.Dimension(300, 103));
+
         LexicoCode.setColumns(20);
         LexicoCode.setRows(5);
         jScrollPane4.setViewportView(LexicoCode);
@@ -256,6 +279,7 @@ public class Ventana extends javax.swing.JFrame {
 
         IntermedioCode.setColumns(20);
         IntermedioCode.setRows(5);
+        IntermedioCode.setMinimumSize(new java.awt.Dimension(500, 100));
         jScrollPane7.setViewportView(IntermedioCode);
 
         jTabbedPane3.addTab("Codigo Intermedio", jScrollPane7);
@@ -418,9 +442,9 @@ public class Ventana extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenu3MouseClicked
 
     private void jMenu4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu4MouseClicked
-        SymbolTable();
         Sintactico();
         Semantico();
+        SymbolTable();
         JOptionPane.showMessageDialog(rootPane, "Compilado");
     }//GEN-LAST:event_jMenu4MouseClicked
 
