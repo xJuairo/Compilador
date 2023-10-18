@@ -319,9 +319,9 @@ class Parser:
         ast = self.program()
 
         if self.errors:
-            print("Syntax errors found. Compilation failed.")
+            pass
         else:
-            print("Syntax is correct. Compilation successful.")
+            pass
 
         return ast
 
@@ -532,6 +532,7 @@ class SymbolTable:
                     else:
                         errores_semantico.append(f"Type error at line {node.line_no}")
                 else: 
+                    errores_semantico.append(f"Error in line {node.line_no}: Variable '{var_name}' undefined.")
                     return
     def is_float(self, value):
         try:
@@ -622,7 +623,8 @@ def semantic_analysis(node, symbol_table):
                 id_node.val = 0
             status = symbol_table.insert(id_node.value, id_node.val , datatype, None, node.line_no, shouldntExist=True)
             if( status == -1):
-                print(f"Error in line {node.line_no}: Variable {id_node.value}, Already declared ")
+                #print(f"Error in line {node.line_no}: Variable {id_node.value}, Already declared ")
+                errores_semantico.append(f"Error in line {node.line_no}: Variable {id_node.value}, Already declared ")
                 id_node.val = "Error"
     for child in node.children:
         semantic_analysis(child, symbol_table)
@@ -631,14 +633,19 @@ def semantic_analysis(node, symbol_table):
         var_name = node.children[0].value
         symbol_info = symbol_table.lookup(var_name)
         if not symbol_info:
-            print(f"Error in line {node.line_no}: Variable '{var_name}' undefined.")
+            #print(f"Error in line {node.line_no}: Variable '{var_name}' undefined.")
             errores_semantico.append(f"Error in line {node.line_no}: Variable '{var_name}' undefined.")
         else:
             node.children[0].type = symbol_info[1]
             var_type = symbol_info[1]
             var_value = symbol_table.evaluate_expression(node.children[1])
-            if(node.children[1].type != node.children[0].type):
-                print(f"Error in line {node.line_no}: wrong type")
+            if(node.children[1].type == "int" and node.children[0].type == "float"):
+                node.val = float(var_value)
+                node.type = var_type
+                symbol_table.insert(var_name, var_value, var_type, None, node.line_no)
+            elif(node.children[1].type != node.children[0].type):
+                #print(f"VALOR 1: {node.children[1].value} TIPO 1: {node.children[1].type} VALOR 2: {node.children[0].value} TIPO 2:{node.children[0].type}")
+                #print(f"Error in line {node.line_no}: wrong type")
                 errores_semantico.append(f"Error in line {node.line_no}: wrong type")
             #TODO: SOLO SE ASIGNA Y SE GUARDA EN MEMORIA SI ES CORRECTO EL TIPADO, DLC, NO SE ACTUALIZA VARIABLE
             else: 
@@ -651,7 +658,7 @@ def semantic_analysis(node, symbol_table):
         # Verificar si la expresión es booleana
         expr_node = node.children[0]  # Asume que la expresión está en el primer hijo
         if not check_boolean_expr(expr_node):
-            print(f"Error in line {expr_node.line_no}: not a boolean expresion.")
+            #print(f"Error in line {expr_node.line_no}: not a boolean expresion.")
             errores_semantico.append(f"Error in line {expr_node.line_no}: not a boolean expresion.")
         else:
             var_value = symbol_table.evaluate_expression(node.children[0])
@@ -659,9 +666,7 @@ def semantic_analysis(node, symbol_table):
     if node.value == "DoWhileStatement":
         expr_node = node.children[1]  # Asume que la expresión está en el 2ndo hijo
         if not check_boolean_expr(expr_node):
-            print(
-                f"Error in line {expr_node.line_no}: Wrong expresion in statement."
-            )
+            #print(     f"Error in line {expr_node.line_no}: Wrong expresion in statement." )
             errores_semantico.append(f"Error in line {expr_node.line_no}: Wrong expresion in statement.")
         else:
             var_value = symbol_table.evaluate_expression(node.children[-1])
@@ -670,7 +675,13 @@ def semantic_analysis(node, symbol_table):
             var_value = symbol_table.evaluate_expression(node.children[0])
             node.val = var_value
     if node.value == "InputStatement":
-             symbol_table.insertLine(node.children[0].children[0].value, node.line_no)
+            var_name = node.children[0].children[0].value
+            symbol_info = symbol_table.lookup(var_name)
+            if(symbol_info != None):
+                symbol_table.insertLine(var_name, node.line_no)
+            else:
+                errores_semantico.append(f"Error in line {node.line_no}: Variable '{var_name}' undefined.")
+
 
 root_node = ast
 
@@ -679,9 +690,13 @@ semantic_analysis(root_node, symbol_table)
 
 print_ast(ast)
 f.close()
+if errores_semantico:
+    for error in errores_semantico:
+        pass
+f.close()
 # Imprimir arbol con anotaciones a txt
 f = open("ArbolAnotaciones.txt", "w", encoding="utf-8")
-print("Abstract Syntax Tree:")
+print("Syntax Tree With Attributes:")
 print_ast(ast, annotations= True)
 f.close()
 #Imprimir tabla de simboloas a txt

@@ -90,6 +90,10 @@ public class Ventana extends javax.swing.JFrame {
 
         //editor.colors();
         initComponents();
+        Font consolasFont = new Font("Consolas", Font.PLAIN, 24);
+        LexicoCode.setFont(consolasFont);
+        SintacticoCode.setFont(consolasFont);
+        SemanticoCode.setFont(consolasFont);
         JSplitPane splitPanev = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         splitPanev.setTopComponent(splitPane);
@@ -117,7 +121,7 @@ public class Ventana extends javax.swing.JFrame {
             Path rutaArchivo = Paths.get(rutaActual.toString()).resolve("TablaSimbolos.txt");
             System.out.println(rutaArchivo);
             // Ruta al archivo de texto en tu proyecto
-            Font consolasFont = new Font("Consolas", Font.PLAIN, 14);
+            Font consolasFont = new Font("Consolas", Font.PLAIN, 24);
             tabla.setFont(consolasFont);
             // Abre el archivo y crea un lector (BufferedReader) para leer su contenido
             List<String> lineas = Files.readAllLines(rutaArchivo);
@@ -126,6 +130,32 @@ public class Ventana extends javax.swing.JFrame {
             for (String linea : lineas) {
                 System.out.println(linea);
                 tabla.append(linea+ "\n");
+            }
+            // Establece el contenido del JTextArea con el contenido del archivo
+            
+        } catch (Exception e) {
+            e.printStackTrace();  // Manejo de excepciones, puedes personalizarlo según tus necesidades.
+        }
+
+    }
+    
+    public void Errores(){
+        try {
+            ErroresCode.setText("");
+            String rutaActual = System.getProperty("user.dir");
+            System.out.println("Ruta actual: " + rutaActual);
+            Path rutaArchivo = Paths.get(rutaActual.toString()).resolve("ErroresSemantico.txt");
+            System.out.println(rutaArchivo);
+            // Ruta al archivo de texto en tu proyecto
+            Font consolasFont = new Font("Consolas", Font.PLAIN, 24);
+            ErroresCode.setFont(consolasFont);
+            // Abre el archivo y crea un lector (BufferedReader) para leer su contenido
+            List<String> lineas = Files.readAllLines(rutaArchivo);
+
+            // Iterar a través de las líneas y mostrar su contenido
+            for (String linea : lineas) {
+                System.out.println(linea);
+                ErroresCode.append(linea+ "\n");
             }
             // Establece el contenido del JTextArea con el contenido del archivo
             
@@ -445,6 +475,7 @@ public class Ventana extends javax.swing.JFrame {
         Sintactico();
         Semantico();
         SymbolTable();
+        Errores();
         JOptionPane.showMessageDialog(rootPane, "Compilado");
     }//GEN-LAST:event_jMenu4MouseClicked
 

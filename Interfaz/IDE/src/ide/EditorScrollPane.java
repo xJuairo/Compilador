@@ -66,6 +66,8 @@ public class EditorScrollPane extends JScrollPane {
     inputArea.setPreferredSize(new Dimension(width, height));
     inputArea.setMinimumSize(new Dimension(width, height));
     compf=compF;
+    Font consolasFont = new Font("Consolas", Font.PLAIN, 24);
+    inputArea.setFont(consolasFont);
     
     
     

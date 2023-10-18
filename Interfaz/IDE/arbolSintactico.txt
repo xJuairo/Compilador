@@ -20,6 +20,19 @@ Arbol Sintactico
       - x
       - 32.32
     - Assignment
+      - c
+      - 23
+    - Assignment
+      - c
+      - +
+        - c
+        - 1
+    - Assignment
+      - c
+      - -
+        - c
+        - 1
+    - Assignment
       - x
       - 23
     - Assignment
