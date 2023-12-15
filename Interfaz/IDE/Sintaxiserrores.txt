@@ -1,0 +1,3 @@
+Syntax Errors:
+Sentencia inválida: main
+Error in line None: Expected '}', found 'end of input'

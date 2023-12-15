@@ -10,6 +10,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -18,7 +19,10 @@ import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -31,11 +35,16 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.python.core.PyObject;
 import org.python.util.PythonInterpreter;
 
@@ -90,6 +99,24 @@ public class Ventana extends javax.swing.JFrame {
 
         //editor.colors();
         initComponents();
+        /*ResultadosCode.addCaretListener(new CaretListener() {
+            @Override
+            public void caretUpdate(CaretEvent e){
+                int dot = e.getDot();
+                int mark = e.getMark();
+                //Solo premitir el movimiento del curso si esta en la
+                if(!isCursorAtLastLine(ResultadosCode, dot)){
+                    ResultadosCode.setCaretPosition(ResultadosCode.getDocument().getLength());
+                }
+                if(dot != mark){
+                    int start = Math.min(dot, mark);
+                    int end = Math.max(dot,mark);
+                    String selectedText = ResultadosCode.getText();
+                    
+                }
+            }
+        });*/
+        
         Font consolasFont = new Font("Consolas", Font.PLAIN, 24);
         LexicoCode.setFont(consolasFont);
         SintacticoCode.setFont(consolasFont);
@@ -111,6 +138,139 @@ public class Ventana extends javax.swing.JFrame {
         jScrollPane2.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         jScrollPane3.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
+    }
+        public static JSONObject leerArbolJson(String rutaArchivo) {
+            JSONParser parser = new JSONParser();
+
+            try {
+                String contenido = new String(Files.readAllBytes(Paths.get(rutaArchivo)));
+                Object obj = parser.parse(contenido);
+                return (JSONObject) obj;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+        public static void manejarInputStatements(JSONObject nodo, String archivoEntrada) throws IOException {
+            // Verifica si el nodo es un InputStatement
+            if ("InputStatement".equals(nodo.get("value"))) {
+                JSONObject idListNode = (JSONObject) ((JSONArray) nodo.get("children")).get(0); // Obtener el nodo idList
+                JSONArray idListChildren = (JSONArray) idListNode.get("children");
+                for (Object o : idListChildren) {
+                    JSONObject child = (JSONObject) o;
+                    String nombreVariable = (String) child.get("value");
+                    String entradaUsuario = JOptionPane.showInputDialog("Ingrese valor para " + nombreVariable + ":");
+                    escribirEnArchivo(archivoEntrada, nombreVariable + " " + entradaUsuario);
+                }
+                //
+
+            }
+
+            // Procesar nodos hijos (si existen)
+            if (nodo.containsKey("children")) {
+                JSONArray children = (JSONArray) nodo.get("children");
+                for (Object o : children) {
+                    manejarInputStatements((JSONObject) o, archivoEntrada);
+                }
+            }
+        }
+
+        private static void escribirEnArchivo(String archivoEntrada, String data) throws IOException {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(archivoEntrada, true))) {
+                writer.write(data);
+                writer.newLine();
+            }
+        }
+        
+        private static void limpiarArchivo(String archivo) throws IOException {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(archivo))) {
+                writer.write("");  // Escribe una cadena vacía para limpiar el archivo
+            }   
+        }
+        
+        public void Salida(){
+            String rutaactual = System.getProperty("user.dir");
+            System.out.println("Ruta actual: " + rutaactual);
+            Path rutaNueva = Paths.get(rutaactual).getParent().getParent();
+            try {
+                ResultadosCode.setText("");
+                String rutaActual = System.getProperty("user.dir");
+                System.out.println("Ruta actual: " + rutaActual);
+                Path rutaArchivo = Paths.get(rutaActual.toString()).resolve("output.txt");
+                System.out.println(rutaArchivo);
+                // Ruta al archivo de texto en tu proyecto
+                Font consolasFont = new Font("Consolas", Font.PLAIN, 24);
+                ResultadosCode.setFont(consolasFont);
+                // Abre el archivo y crea un lector (BufferedReader) para leer su contenido
+                List<String> lineas = Files.readAllLines(rutaArchivo);
+
+                // Iterar a través de las líneas y mostrar su contenido
+                for (String linea : lineas) {
+                    System.out.println(linea);
+                    ResultadosCode.append(linea+ "\n");
+                }
+                    //if (!ErroresCode.getText().trim().isEmpty()) {
+                        //ResultadosCode.setText("");
+
+                    //}
+                // Establece el contenido del JTextArea con el contenido del archivo
+
+            } catch (Exception e) {
+                e.printStackTrace();  // Manejo de excepciones, puedes personalizarlo según tus necesidades.
+            }
+
+        }
+    
+    public void CodigoIntermedio(){
+
+        try {
+            String rutaActual = System.getProperty("user.dir");
+            File directorioActualFile = new File(rutaActual);
+            File directorioPadre = directorioActualFile.getParentFile().getParentFile();
+            File analizadorLexicoDirectorio = new File(directorioPadre, "AnalizadorLexico");
+            String rutactual = System.getProperty("user.dir");
+            Path rutaarchivo = Paths.get(rutactual.toString()).resolve("arbol_sintactico.json");
+            Path rutaentrada = Paths.get(rutaActual.toString()).resolve("archivo_entrada.txt");
+            limpiarArchivo(rutaentrada.toString());
+            JSONObject arbol = leerArbolJson(rutaarchivo.toString());
+            manejarInputStatements(arbol, rutaentrada.toString());
+            String rutaactual = System.getProperty("user.dir");
+            System.out.println("Ruta actual: " + rutaactual);
+            Path rutaNueva = Paths.get(rutaactual).getParent().getParent();
+            System.out.println("Ruta nueva: " + rutaNueva.toString());
+            Path ruta = Paths.get(rutaNueva.toString(),"AnalizadorLexico");
+            System.out.println(ruta);
+            Path rutaScript = Paths.get(ruta.toString()).resolve("ejecucion.py");
+
+            try {
+                String salidaPython = PythonRunner.ejecutarScriptPython(rutaScript.toString());
+                System.out.println(salidaPython);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            
+            IntermedioCode.setText("");
+
+            if (analizadorLexicoDirectorio.exists() && analizadorLexicoDirectorio.isDirectory()) {
+            // Acceder a la carpeta "AnalizadorLexico"
+            System.out.println("Ruta completa de la carpeta AnalizadorLexico: " + analizadorLexicoDirectorio.getAbsolutePath());
+            } else {
+                System.out.println("La carpeta AnalizadorLexico no existe en la ruta proporcionada.");
+            }
+            Path rutaArchivo = Paths.get(rutaActual).resolve("codigo_intermedio.txt");
+
+
+            Font consolasFont = new Font("Consolas", Font.PLAIN, 24);
+            IntermedioCode.setFont(consolasFont);
+
+            List<String> lineas = Files.readAllLines(rutaArchivo);
+
+            for (String linea : lineas) {
+                IntermedioCode.append(linea + "\n");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();  // Manejo de excepciones, puedes personalizarlo según tus necesidades.
+        }
     }
     
     public void SymbolTable(){
@@ -145,15 +305,21 @@ public class Ventana extends javax.swing.JFrame {
             String rutaActual = System.getProperty("user.dir");
             System.out.println("Ruta actual: " + rutaActual);
             Path rutaArchivo = Paths.get(rutaActual.toString()).resolve("ErroresSemantico.txt");
+            Path rutaarchivo = Paths.get(rutaActual.toString()).resolve("Sintaxiserrores.txt");
             System.out.println(rutaArchivo);
             // Ruta al archivo de texto en tu proyecto
             Font consolasFont = new Font("Consolas", Font.PLAIN, 24);
             ErroresCode.setFont(consolasFont);
             // Abre el archivo y crea un lector (BufferedReader) para leer su contenido
             List<String> lineas = Files.readAllLines(rutaArchivo);
+            List<String> linead = Files.readAllLines(rutaArchivo);
 
             // Iterar a través de las líneas y mostrar su contenido
             for (String linea : lineas) {
+                System.out.println(linea);
+                ErroresCode.append(linea+ "\n");
+            }
+            for (String linea : linead) {
                 System.out.println(linea);
                 ErroresCode.append(linea+ "\n");
             }
@@ -172,7 +338,7 @@ public class Ventana extends javax.swing.JFrame {
         System.out.println("Ruta nueva: " + rutaNueva.toString());
         Path ruta = Paths.get(rutaNueva.toString(),"AnalizadorLexico");
         System.out.println(ruta);
-        Path rutaScript = Paths.get(ruta.toString()).resolve("asemantico.py");
+        Path rutaScript = Paths.get(ruta.toString()).resolve("Analizador_Semantico.py");
         
         try {
             String salidaPython = PythonRunner.ejecutarScriptPython(rutaScript.toString());
@@ -197,6 +363,7 @@ public class Ventana extends javax.swing.JFrame {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        
     }
     
     public void obtenerRespuesta(String resp, String err) throws IOException{
@@ -378,7 +545,7 @@ public class Ventana extends javax.swing.JFrame {
         });
         jMenuBar1.add(jMenu3);
 
-        jMenu4.setText("Compilar");
+        jMenu4.setText("Generar");
         jMenu4.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jMenu4MouseClicked(evt);
@@ -391,7 +558,7 @@ public class Ventana extends javax.swing.JFrame {
         });
         jMenuBar1.add(jMenu4);
 
-        jMenu5.setText("Ayuda");
+        jMenu5.setText("Compilar");
         jMenu5.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jMenu5MouseClicked(evt);
@@ -476,11 +643,14 @@ public class Ventana extends javax.swing.JFrame {
         Semantico();
         SymbolTable();
         Errores();
+        CodigoIntermedio();
+        Salida();
         JOptionPane.showMessageDialog(rootPane, "Compilado");
     }//GEN-LAST:event_jMenu4MouseClicked
 
     private void jMenu5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu5MouseClicked
-        JOptionPane.showMessageDialog(rootPane, "Yo tambien la necesito");
+        
+        JOptionPane.showMessageDialog(rootPane, "Compilado");
     }//GEN-LAST:event_jMenu5MouseClicked
 
     /**

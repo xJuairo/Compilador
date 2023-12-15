@@ -1,0 +1,1038 @@
+{
+    "value": "Program",
+    "children": [
+        {
+            "value": "Statements",
+            "children": [
+                {
+                    "value": "FloatDeclaration",
+                    "children": [
+                        {
+                            "value": "IdList",
+                            "children": [
+                                {
+                                    "value": "lluviaNorteEnero",
+                                    "children": [],
+                                    "line_no": "2",
+                                    "type": "float",
+                                    "identificator": false,
+                                    "val": 0
+                                }
+                            ],
+                            "line_no": null,
+                            "type": null,
+                            "identificator": false,
+                            "val": null
+                        }
+                    ],
+                    "line_no": "2",
+                    "type": null,
+                    "identificator": false,
+                    "val": null
+                },
+                {
+                    "value": "FloatDeclaration",
+                    "children": [
+                        {
+                            "value": "IdList",
+                            "children": [
+                                {
+                                    "value": "lluviaNorteFebrero",
+                                    "children": [],
+                                    "line_no": "3",
+                                    "type": "float",
+                                    "identificator": false,
+                                    "val": 0
+                                }
+                            ],
+                            "line_no": null,
+                            "type": null,
+                            "identificator": false,
+                            "val": null
+                        }
+                    ],
+                    "line_no": "3",
+                    "type": null,
+                    "identificator": false,
+                    "val": null
+                },
+                {
+                    "value": "FloatDeclaration",
+                    "children": [
+                        {
+                            "value": "IdList",
+                            "children": [
+                                {
+                                    "value": "lluviaNorteMarzo",
+                                    "children": [],
+                                    "line_no": "4",
+                                    "type": "float",
+                                    "identificator": false,
+                                    "val": 0
+                                }
+                            ],
+                            "line_no": null,
+                            "type": null,
+                            "identificator": false,
+                            "val": null
+                        }
+                    ],
+                    "line_no": "4",
+                    "type": null,
+                    "identificator": false,
+                    "val": null
+                },
+                {
+                    "value": "FloatDeclaration",
+                    "children": [
+                        {
+                            "value": "IdList",
+                            "children": [
+                                {
+                                    "value": "lluviaNorteAbril",
+                                    "children": [],
+                                    "line_no": "5",
+                                    "type": "float",
+                                    "identificator": false,
+                                    "val": 0
+                                }
+                            ],
+                            "line_no": null,
+                            "type": null,
+                            "identificator": false,
+                            "val": null
+                        }
+                    ],
+                    "line_no": "5",
+                    "type": null,
+                    "identificator": false,
+                    "val": null
+                },
+                {
+                    "value": "FloatDeclaration",
+                    "children": [
+                        {
+                            "value": "IdList",
+                            "children": [
+                                {
+                                    "value": "lluviaNorteMayo",
+                                    "children": [],
+                                    "line_no": "6",
+                                    "type": "float",
+                                    "identificator": false,
+                                    "val": 0
+                                }
+                            ],
+                            "line_no": null,
+                            "type": null,
+                            "identificator": false,
+                            "val": null
+                        }
+                    ],
+                    "line_no": "6",
+                    "type": null,
+                    "identificator": false,
+                    "val": null
+                },
+                {
+                    "value": "FloatDeclaration",
+                    "children": [
+                        {
+                            "value": "IdList",
+                            "children": [
+                                {
+                                    "value": "lluviaNorteJunio",
+                                    "children": [],
+                                    "line_no": "7",
+                                    "type": "float",
+                                    "identificator": false,
+                                    "val": 0
+                                }
+                            ],
+                            "line_no": null,
+                            "type": null,
+                            "identificator": false,
+                            "val": null
+                        }
+                    ],
+                    "line_no": "7",
+                    "type": null,
+                    "identificator": false,
+                    "val": null
+                },
+                {
+                    "value": "FloatDeclaration",
+                    "children": [
+                        {
+                            "value": "IdList",
+                            "children": [
+                                {
+                                    "value": "lluviaNorteJulio",
+                                    "children": [],
+                                    "line_no": "8",
+                                    "type": "float",
+                                    "identificator": false,
+                                    "val": 0
+                                }
+                            ],
+                            "line_no": null,
+                            "type": null,
+                            "identificator": false,
+                            "val": null
+                        }
+                    ],
+                    "line_no": "8",
+                    "type": null,
+                    "identificator": false,
+                    "val": null
+                },
+                {
+                    "value": "FloatDeclaration",
+                    "children": [
+                        {
+                            "value": "IdList",
+                            "children": [
+                                {
+                                    "value": "lluviaNorteAgosto",
+                                    "children": [],
+                                    "line_no": "9",
+                                    "type": "float",
+                                    "identificator": false,
+                                    "val": 0
+                                }
+                            ],
+                            "line_no": null,
+                            "type": null,
+                            "identificator": false,
+                            "val": null
+                        }
+                    ],
+                    "line_no": "9",
+                    "type": null,
+                    "identificator": false,
+                    "val": null
+                },
+                {
+                    "value": "FloatDeclaration",
+                    "children": [
+                        {
+                            "value": "IdList",
+                            "children": [
+                                {
+                                    "value": "lluviaNorteSeptiembre",
+                                    "children": [],
+                                    "line_no": "10",
+                                    "type": "float",
+                                    "identificator": false,
+                                    "val": 0
+                                }
+                            ],
+                            "line_no": null,
+                            "type": null,
+                            "identificator": false,
+                            "val": null
+                        }
+                    ],
+                    "line_no": "10",
+                    "type": null,
+                    "identificator": false,
+                    "val": null
+                },
+                {
+                    "value": "FloatDeclaration",
+                    "children": [
+                        {
+                            "value": "IdList",
+                            "children": [
+                                {
+                                    "value": "lluviaNorteOctubre",
+                                    "children": [],
+                                    "line_no": "11",
+                                    "type": "float",
+                                    "identificator": false,
+                                    "val": 0
+                                }
+                            ],
+                            "line_no": null,
+                            "type": null,
+                            "identificator": false,
+                            "val": null
+                        }
+                    ],
+                    "line_no": "11",
+                    "type": null,
+                    "identificator": false,
+                    "val": null
+                },
+                {
+                    "value": "FloatDeclaration",
+                    "children": [
+                        {
+                            "value": "IdList",
+                            "children": [
+                                {
+                                    "value": "lluviaNorteNoviembre",
+                                    "children": [],
+                                    "line_no": "12",
+                                    "type": "float",
+                                    "identificator": false,
+                                    "val": 0
+                                }
+                            ],
+                            "line_no": null,
+                            "type": null,
+                            "identificator": false,
+                            "val": null
+                        }
+                    ],
+                    "line_no": "12",
+                    "type": null,
+                    "identificator": false,
+                    "val": null
+                },
+                {
+                    "value": "FloatDeclaration",
+                    "children": [
+                        {
+                            "value": "IdList",
+                            "children": [
+                                {
+                                    "value": "lluviaNorteDiciembre",
+                                    "children": [],
+                                    "line_no": "13",
+                                    "type": "float",
+                                    "identificator": false,
+                                    "val": 0
+                                }
+                            ],
+                            "line_no": null,
+                            "type": null,
+                            "identificator": false,
+                            "val": null
+                        }
+                    ],
+                    "line_no": "13",
+                    "type": null,
+                    "identificator": false,
+                    "val": null
+                },
+                {
+                    "value": "FloatDeclaration",
+                    "children": [
+                        {
+                            "value": "IdList",
+                            "children": [
+                                {
+                                    "value": "promedioAnual",
+                                    "children": [],
+                                    "line_no": "14",
+                                    "type": "float",
+                                    "identificator": false,
+                                    "val": 0
+                                }
+                            ],
+                            "line_no": null,
+                            "type": null,
+                            "identificator": false,
+                            "val": null
+                        }
+                    ],
+                    "line_no": "14",
+                    "type": null,
+                    "identificator": false,
+                    "val": null
+                },
+                {
+                    "value": "FloatDeclaration",
+                    "children": [
+                        {
+                            "value": "IdList",
+                            "children": [
+                                {
+                                    "value": "registroMenor",
+                                    "children": [],
+                                    "line_no": "15",
+                                    "type": "float",
+                                    "identificator": false,
+                                    "val": 0
+                                }
+                            ],
+                            "line_no": null,
+                            "type": null,
+                            "identificator": false,
+                            "val": null
+                        }
+                    ],
+                    "line_no": "15",
+                    "type": null,
+                    "identificator": false,
+                    "val": null
+                },
+                {
+                    "value": "FloatDeclaration",
+                    "children": [
+                        {
+                            "value": "IdList",
+                            "children": [
+                                {
+                                    "value": "mayorLluvia",
+                                    "children": [],
+                                    "line_no": "16",
+                                    "type": "float",
+                                    "identificator": false,
+                                    "val": 0
+                                }
+                            ],
+                            "line_no": null,
+                            "type": null,
+                            "identificator": false,
+                            "val": null
+                        }
+                    ],
+                    "line_no": "16",
+                    "type": null,
+                    "identificator": false,
+                    "val": null
+                },
+                {
+                    "value": "Assignment",
+                    "children": [
+                        {
+                            "value": "lluviaNorteEnero",
+                            "children": [],
+                            "line_no": "17",
+                            "type": "float",
+                            "identificator": true,
+                            "val": null
+                        },
+                        {
+                            "value": "50.0",
+                            "children": [],
+                            "line_no": "17",
+                            "type": "float",
+                            "identificator": false,
+                            "val": 50.0
+                        }
+                    ],
+                    "line_no": "17",
+                    "type": "float",
+                    "identificator": false,
+                    "val": 50.0
+                },
+                {
+                    "value": "Assignment",
+                    "children": [
+                        {
+                            "value": "lluviaNorteFebrero",
+                            "children": [],
+                            "line_no": "18",
+                            "type": "float",
+                            "identificator": true,
+                            "val": null
+                        },
+                        {
+                            "value": "40.0",
+                            "children": [],
+                            "line_no": "18",
+                            "type": "float",
+                            "identificator": false,
+                            "val": 40.0
+                        }
+                    ],
+                    "line_no": "18",
+                    "type": "float",
+                    "identificator": false,
+                    "val": 40.0
+                },
+                {
+                    "value": "Assignment",
+                    "children": [
+                        {
+                            "value": "lluviaNorteMarzo",
+                            "children": [],
+                            "line_no": "19",
+                            "type": "float",
+                            "identificator": true,
+                            "val": null
+                        },
+                        {
+                            "value": "60.0",
+                            "children": [],
+                            "line_no": "19",
+                            "type": "float",
+                            "identificator": false,
+                            "val": 60.0
+                        }
+                    ],
+                    "line_no": "19",
+                    "type": "float",
+                    "identificator": false,
+                    "val": 60.0
+                },
+                {
+                    "value": "Assignment",
+                    "children": [
+                        {
+                            "value": "lluviaNorteAbril",
+                            "children": [],
+                            "line_no": "20",
+                            "type": "float",
+                            "identificator": true,
+                            "val": null
+                        },
+                        {
+                            "value": "30.0",
+                            "children": [],
+                            "line_no": "20",
+                            "type": "float",
+                            "identificator": false,
+                            "val": 30.0
+                        }
+                    ],
+                    "line_no": "20",
+                    "type": "float",
+                    "identificator": false,
+                    "val": 30.0
+                },
+                {
+                    "value": "Assignment",
+                    "children": [
+                        {
+                            "value": "lluviaNorteMayo",
+                            "children": [],
+                            "line_no": "21",
+                            "type": "float",
+                            "identificator": true,
+                            "val": null
+                        },
+                        {
+                            "value": "70.0",
+                            "children": [],
+                            "line_no": "21",
+                            "type": "float",
+                            "identificator": false,
+                            "val": 70.0
+                        }
+                    ],
+                    "line_no": "21",
+                    "type": "float",
+                    "identificator": false,
+                    "val": 70.0
+                },
+                {
+                    "value": "Assignment",
+                    "children": [
+                        {
+                            "value": "lluviaNorteJunio",
+                            "children": [],
+                            "line_no": "22",
+                            "type": "float",
+                            "identificator": true,
+                            "val": null
+                        },
+                        {
+                            "value": "55.0",
+                            "children": [],
+                            "line_no": "22",
+                            "type": "float",
+                            "identificator": false,
+                            "val": 55.0
+                        }
+                    ],
+                    "line_no": "22",
+                    "type": "float",
+                    "identificator": false,
+                    "val": 55.0
+                },
+                {
+                    "value": "Assignment",
+                    "children": [
+                        {
+                            "value": "lluviaNorteJulio",
+                            "children": [],
+                            "line_no": "23",
+                            "type": "float",
+                            "identificator": true,
+                            "val": null
+                        },
+                        {
+                            "value": "45.0",
+                            "children": [],
+                            "line_no": "23",
+                            "type": "float",
+                            "identificator": false,
+                            "val": 45.0
+                        }
+                    ],
+                    "line_no": "23",
+                    "type": "float",
+                    "identificator": false,
+                    "val": 45.0
+                },
+                {
+                    "value": "Assignment",
+                    "children": [
+                        {
+                            "value": "lluviaNorteAgosto",
+                            "children": [],
+                            "line_no": "24",
+                            "type": "float",
+                            "identificator": true,
+                            "val": null
+                        },
+                        {
+                            "value": "65.0",
+                            "children": [],
+                            "line_no": "24",
+                            "type": "float",
+                            "identificator": false,
+                            "val": 65.0
+                        }
+                    ],
+                    "line_no": "24",
+                    "type": "float",
+                    "identificator": false,
+                    "val": 65.0
+                },
+                {
+                    "value": "Assignment",
+                    "children": [
+                        {
+                            "value": "lluviaNorteSeptiembre",
+                            "children": [],
+                            "line_no": "25",
+                            "type": "float",
+                            "identificator": true,
+                            "val": null
+                        },
+                        {
+                            "value": "75.0",
+                            "children": [],
+                            "line_no": "25",
+                            "type": "float",
+                            "identificator": false,
+                            "val": 75.0
+                        }
+                    ],
+                    "line_no": "25",
+                    "type": "float",
+                    "identificator": false,
+                    "val": 75.0
+                },
+                {
+                    "value": "Assignment",
+                    "children": [
+                        {
+                            "value": "lluviaNorteOctubre",
+                            "children": [],
+                            "line_no": "26",
+                            "type": "float",
+                            "identificator": true,
+                            "val": null
+                        },
+                        {
+                            "value": "35.0",
+                            "children": [],
+                            "line_no": "26",
+                            "type": "float",
+                            "identificator": false,
+                            "val": 35.0
+                        }
+                    ],
+                    "line_no": "26",
+                    "type": "float",
+                    "identificator": false,
+                    "val": 35.0
+                },
+                {
+                    "value": "Assignment",
+                    "children": [
+                        {
+                            "value": "lluviaNorteNoviembre",
+                            "children": [],
+                            "line_no": "27",
+                            "type": "float",
+                            "identificator": true,
+                            "val": null
+                        },
+                        {
+                            "value": "80.0",
+                            "children": [],
+                            "line_no": "27",
+                            "type": "float",
+                            "identificator": false,
+                            "val": 80.0
+                        }
+                    ],
+                    "line_no": "27",
+                    "type": "float",
+                    "identificator": false,
+                    "val": 80.0
+                },
+                {
+                    "value": "Assignment",
+                    "children": [
+                        {
+                            "value": "lluviaNorteDiciembre",
+                            "children": [],
+                            "line_no": "28",
+                            "type": "float",
+                            "identificator": true,
+                            "val": null
+                        },
+                        {
+                            "value": "25.0",
+                            "children": [],
+                            "line_no": "28",
+                            "type": "float",
+                            "identificator": false,
+                            "val": 25.0
+                        }
+                    ],
+                    "line_no": "28",
+                    "type": "float",
+                    "identificator": false,
+                    "val": 25.0
+                },
+                {
+                    "value": "Assignment",
+                    "children": [
+                        {
+                            "value": "promedioAnual",
+                            "children": [],
+                            "line_no": "29",
+                            "type": "float",
+                            "identificator": true,
+                            "val": null
+                        },
+                        {
+                            "value": "+",
+                            "children": [
+                                {
+                                    "value": "+",
+                                    "children": [
+                                        {
+                                            "value": "+",
+                                            "children": [
+                                                {
+                                                    "value": "+",
+                                                    "children": [
+                                                        {
+                                                            "value": "+",
+                                                            "children": [
+                                                                {
+                                                                    "value": "+",
+                                                                    "children": [
+                                                                        {
+                                                                            "value": "+",
+                                                                            "children": [
+                                                                                {
+                                                                                    "value": "+",
+                                                                                    "children": [
+                                                                                        {
+                                                                                            "value": "+",
+                                                                                            "children": [
+                                                                                                {
+                                                                                                    "value": "+",
+                                                                                                    "children": [
+                                                                                                        {
+                                                                                                            "value": "+",
+                                                                                                            "children": [
+                                                                                                                {
+                                                                                                                    "value": "+",
+                                                                                                                    "children": [
+                                                                                                                        {
+                                                                                                                            "value": "lluviaNorteEnero",
+                                                                                                                            "children": [],
+                                                                                                                            "line_no": "29",
+                                                                                                                            "type": "float",
+                                                                                                                            "identificator": true,
+                                                                                                                            "val": 50.0
+                                                                                                                        },
+                                                                                                                        {
+                                                                                                                            "value": "lluviaNorteFebrero",
+                                                                                                                            "children": [],
+                                                                                                                            "line_no": "29",
+                                                                                                                            "type": "float",
+                                                                                                                            "identificator": true,
+                                                                                                                            "val": 40.0
+                                                                                                                        }
+                                                                                                                    ],
+                                                                                                                    "line_no": "29",
+                                                                                                                    "type": "float",
+                                                                                                                    "identificator": false,
+                                                                                                                    "val": 90.0
+                                                                                                                },
+                                                                                                                {
+                                                                                                                    "value": "lluviaNorteMarzo",
+                                                                                                                    "children": [],
+                                                                                                                    "line_no": "29",
+                                                                                                                    "type": "float",
+                                                                                                                    "identificator": true,
+                                                                                                                    "val": 60.0
+                                                                                                                }
+                                                                                                            ],
+                                                                                                            "line_no": "29",
+                                                                                                            "type": "float",
+                                                                                                            "identificator": false,
+                                                                                                            "val": 150.0
+                                                                                                        },
+                                                                                                        {
+                                                                                                            "value": "lluviaNorteAbril",
+                                                                                                            "children": [],
+                                                                                                            "line_no": "30",
+                                                                                                            "type": "float",
+                                                                                                            "identificator": true,
+                                                                                                            "val": 30.0
+                                                                                                        }
+                                                                                                    ],
+                                                                                                    "line_no": "29",
+                                                                                                    "type": "float",
+                                                                                                    "identificator": false,
+                                                                                                    "val": 180.0
+                                                                                                },
+                                                                                                {
+                                                                                                    "value": "lluviaNorteMayo",
+                                                                                                    "children": [],
+                                                                                                    "line_no": "30",
+                                                                                                    "type": "float",
+                                                                                                    "identificator": true,
+                                                                                                    "val": 70.0
+                                                                                                }
+                                                                                            ],
+                                                                                            "line_no": "30",
+                                                                                            "type": "float",
+                                                                                            "identificator": false,
+                                                                                            "val": 250.0
+                                                                                        },
+                                                                                        {
+                                                                                            "value": "lluviaNorteJunio",
+                                                                                            "children": [],
+                                                                                            "line_no": "30",
+                                                                                            "type": "float",
+                                                                                            "identificator": true,
+                                                                                            "val": 55.0
+                                                                                        }
+                                                                                    ],
+                                                                                    "line_no": "30",
+                                                                                    "type": "float",
+                                                                                    "identificator": false,
+                                                                                    "val": 305.0
+                                                                                },
+                                                                                {
+                                                                                    "value": "lluviaNorteJulio",
+                                                                                    "children": [],
+                                                                                    "line_no": "30",
+                                                                                    "type": "float",
+                                                                                    "identificator": true,
+                                                                                    "val": 45.0
+                                                                                }
+                                                                            ],
+                                                                            "line_no": "30",
+                                                                            "type": "float",
+                                                                            "identificator": false,
+                                                                            "val": 350.0
+                                                                        },
+                                                                        {
+                                                                            "value": "lluviaNorteAgosto",
+                                                                            "children": [],
+                                                                            "line_no": "31",
+                                                                            "type": "float",
+                                                                            "identificator": true,
+                                                                            "val": 65.0
+                                                                        }
+                                                                    ],
+                                                                    "line_no": "30",
+                                                                    "type": "float",
+                                                                    "identificator": false,
+                                                                    "val": 415.0
+                                                                },
+                                                                {
+                                                                    "value": "lluviaNorteAgosto",
+                                                                    "children": [],
+                                                                    "line_no": "31",
+                                                                    "type": "float",
+                                                                    "identificator": true,
+                                                                    "val": 65.0
+                                                                }
+                                                            ],
+                                                            "line_no": "31",
+                                                            "type": "float",
+                                                            "identificator": false,
+                                                            "val": 480.0
+                                                        },
+                                                        {
+                                                            "value": "lluviaNorteSeptiembre",
+                                                            "children": [],
+                                                            "line_no": "31",
+                                                            "type": "float",
+                                                            "identificator": true,
+                                                            "val": 75.0
+                                                        }
+                                                    ],
+                                                    "line_no": "31",
+                                                    "type": "float",
+                                                    "identificator": false,
+                                                    "val": 555.0
+                                                },
+                                                {
+                                                    "value": "lluviaNorteOctubre",
+                                                    "children": [],
+                                                    "line_no": "31",
+                                                    "type": "float",
+                                                    "identificator": true,
+                                                    "val": 35.0
+                                                }
+                                            ],
+                                            "line_no": "31",
+                                            "type": "float",
+                                            "identificator": false,
+                                            "val": 590.0
+                                        },
+                                        {
+                                            "value": "lluviaNorteNoviembre",
+                                            "children": [],
+                                            "line_no": "32",
+                                            "type": "float",
+                                            "identificator": true,
+                                            "val": 80.0
+                                        }
+                                    ],
+                                    "line_no": "31",
+                                    "type": "float",
+                                    "identificator": false,
+                                    "val": 670.0
+                                },
+                                {
+                                    "value": "lluviaNorteDiciembre",
+                                    "children": [],
+                                    "line_no": "32",
+                                    "type": "float",
+                                    "identificator": true,
+                                    "val": 25.0
+                                }
+                            ],
+                            "line_no": "32",
+                            "type": "float",
+                            "identificator": false,
+                            "val": 695.0
+                        }
+                    ],
+                    "line_no": "29",
+                    "type": "float",
+                    "identificator": false,
+                    "val": 695.0
+                },
+                {
+                    "value": "OutputStatement",
+                    "children": [
+                        {
+                            "value": "promedioAnual",
+                            "children": [],
+                            "line_no": "33",
+                            "type": "float",
+                            "identificator": true,
+                            "val": 695.0
+                        }
+                    ],
+                    "line_no": "33",
+                    "type": null,
+                    "identificator": false,
+                    "val": 695.0
+                },
+                {
+                    "value": "Assignment",
+                    "children": [
+                        {
+                            "value": "registroMenor",
+                            "children": [],
+                            "line_no": "34",
+                            "type": "float",
+                            "identificator": true,
+                            "val": null
+                        },
+                        {
+                            "value": "lluviaNorteDiciembre",
+                            "children": [],
+                            "line_no": "34",
+                            "type": "float",
+                            "identificator": true,
+                            "val": 25.0
+                        }
+                    ],
+                    "line_no": "34",
+                    "type": "float",
+                    "identificator": false,
+                    "val": 25.0
+                },
+                {
+                    "value": "OutputStatement",
+                    "children": [
+                        {
+                            "value": "registroMenor",
+                            "children": [],
+                            "line_no": "35",
+                            "type": "float",
+                            "identificator": true,
+                            "val": 25.0
+                        }
+                    ],
+                    "line_no": "35",
+                    "type": null,
+                    "identificator": false,
+                    "val": 25.0
+                },
+                {
+                    "value": "Assignment",
+                    "children": [
+                        {
+                            "value": "mayorLluvia",
+                            "children": [],
+                            "line_no": "36",
+                            "type": "float",
+                            "identificator": true,
+                            "val": null
+                        },
+                        {
+                            "value": "lluviaNorteNoviembre",
+                            "children": [],
+                            "line_no": "36",
+                            "type": "float",
+                            "identificator": true,
+                            "val": 80.0
+                        }
+                    ],
+                    "line_no": "36",
+                    "type": "float",
+                    "identificator": false,
+                    "val": 80.0
+                },
+                {
+                    "value": "OutputStatement",
+                    "children": [
+                        {
+                            "value": "mayorLluvia",
+                            "children": [],
+                            "line_no": "37",
+                            "type": "float",
+                            "identificator": true,
+                            "val": 80.0
+                        }
+                    ],
+                    "line_no": "37",
+                    "type": null,
+                    "identificator": false,
+                    "val": 80.0
+                }
+            ],
+            "line_no": null,
+            "type": null,
+            "identificator": false,
+            "val": null
+        }
+    ],
+    "line_no": null,
+    "type": null,
+    "identificator": false,
+    "val": null
+}

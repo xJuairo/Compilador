@@ -1,0 +1,42 @@
+LDC T1, 50.0
+ST T1, lluviaNorteEnero
+LDC T2, 40.0
+ST T2, lluviaNorteFebrero
+LDC T3, 60.0
+ST T3, lluviaNorteMarzo
+LDC T4, 30.0
+ST T4, lluviaNorteAbril
+LDC T5, 70.0
+ST T5, lluviaNorteMayo
+LDC T6, 55.0
+ST T6, lluviaNorteJunio
+LDC T7, 45.0
+ST T7, lluviaNorteJulio
+LDC T8, 65.0
+ST T8, lluviaNorteAgosto
+LDC T9, 75.0
+ST T9, lluviaNorteSeptiembre
+LDC T10, 35.0
+ST T10, lluviaNorteOctubre
+LDC T11, 80.0
+ST T11, lluviaNorteNoviembre
+LDC T12, 25.0
+ST T12, lluviaNorteDiciembre
+ADD lluviaNorteEnero, lluviaNorteFebrero, T13
+ADD T13, lluviaNorteMarzo, T14
+ADD T14, lluviaNorteAbril, T15
+ADD T15, lluviaNorteMayo, T16
+ADD T16, lluviaNorteJunio, T17
+ADD T17, lluviaNorteJulio, T18
+ADD T18, lluviaNorteAgosto, T19
+ADD T19, lluviaNorteAgosto, T20
+ADD T20, lluviaNorteSeptiembre, T21
+ADD T21, lluviaNorteOctubre, T22
+ADD T22, lluviaNorteNoviembre, T23
+ADD T23, lluviaNorteDiciembre, T24
+ST T24, promedioAnual
+OUT promedioAnual
+ST lluviaNorteDiciembre, registroMenor
+OUT registroMenor
+ST lluviaNorteNoviembre, mayorLluvia
+OUT mayorLluvia

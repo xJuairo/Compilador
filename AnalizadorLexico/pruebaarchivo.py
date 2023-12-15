@@ -40,7 +40,8 @@ aritmetica = {
     "-": "subtraction operator",
     "*": "multiplication operator",
     "/": "division operator",
-    "=": "assignment operator"
+    "=": "assignment operator",
+    "%": "modulo operator"
 }
 aritmetica_key = aritmetica.keys()
 # Lista de operadores de comparación

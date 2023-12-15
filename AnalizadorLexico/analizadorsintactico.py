@@ -182,12 +182,13 @@ class Parser:
         return root
 
     def expr(self):
-        root = self.relational_expr()
-        if self.current_token and self.current_token.token_type in ["+", "-"]:
+        root = self.term()
+        while self.current_token and self.current_token.token_type in ["+", "-"]:
             op_node = Node(self.current_token.value)
             self.match(self.current_token.token_type)
-            root.add_child(op_node)
-            root.add_child(self.expr())
+            op_node.add_child(root)
+            op_node.add_child(self.term())
+            root = op_node
         return root
     
     def relational_expr(self):
@@ -204,10 +205,11 @@ class Parser:
 
     def term(self):
         root = self.factor()
-        while self.current_token and self.current_token.token_type in ["*", "/"]:
+        while self.current_token and self.current_token.token_type in ["*", "/", "%"]:
             op_node = Node(self.current_token.value)
             self.match(self.current_token.token_type)
-            root.add_child(op_node)
+            op_node.add_child(root)
+            root = op_node
             root.add_child(self.factor())
         return root
 
@@ -267,9 +269,18 @@ ast = parser.parse()
 
 # Print errors
 if parser.errors:
-    print("Syntax Errors:")
-    for error in parser.errors:
-        print(error)
+    # Abre un archivo en modo escritura
+    with open("Sintaxiserrores.txt", "w") as archivo_errores:
+        # Escribe el encabezado
+        archivo_errores.write("Syntax Errors:\n")
+        
+        # Escribe cada error en una nueva línea
+        for error in parser.errors:
+            archivo_errores.write(error + "\n")
+
+    # Imprime un mensaje indicando que se guardaron los errores en el archivo
+else:
+    print("No hay errores de sintaxis.")
 
 # # Print AST
 # def print_ast(node, level=0):
